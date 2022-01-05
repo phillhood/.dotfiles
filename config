@@ -1,0 +1,60 @@
+[global_config]
+  borderless = True
+[keybindings]
+[profiles]
+  [[default]]
+    allow_bold = False
+    icon_bell = False
+    background_color = "#1b1f20"
+    cursor_color = "#fcfcfa"
+    cursor_color_fg = False
+    font = Ubuntu Mono 10
+    foreground_color = "#fcfcfa"
+    show_titlebar = False
+    scrollbar_position = hidden
+    palette = "#2e3436:#ff6188:#a9dc76:#ffd866:#fc9867:#ab9df2:#78dce8:#fcfcfa:#888a85:#ff6188:#a9dc76:#ffd866:#fc9867:#ab9df2:#78dce8:#fcfcfa"
+    use_system_font = False
+[layouts]
+  [[default]]
+    [[[child0]]]
+      type = Window
+      parent = ""
+      order = 0
+      position = 3196:495
+      maximised = False
+      fullscreen = False
+      size = 804, 1413
+      title = phill.hood@hw-mdev-96:~
+      last_active_term = cd752f22-172f-4dc5-ad75-670bbbef0fae
+      last_active_window = True
+    [[[child1]]]
+      type = VPaned
+      parent = child0
+      order = 0
+      position = 447
+      ratio = 0.3174715909090909
+    [[[terminal2]]]
+      type = Terminal
+      parent = child1
+      order = 0
+      profile = default
+      uuid = cd752f22-172f-4dc5-ad75-670bbbef0fae
+    [[[child3]]]
+      type = VPaned
+      parent = child1
+      order = 1
+      position = 463
+      ratio = 0.4822916666666667
+    [[[terminal4]]]
+      type = Terminal
+      parent = child3
+      order = 0
+      profile = default
+      uuid = 15b102e7-a43d-4a2f-a735-3fe7548b5b00
+    [[[terminal5]]]
+      type = Terminal
+      parent = child3
+      order = 1
+      profile = default
+      uuid = b692c479-9424-4e42-ba20-1e1777ba683e
+[plugins]
