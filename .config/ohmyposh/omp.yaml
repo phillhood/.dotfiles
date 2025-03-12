@@ -79,16 +79,17 @@ blocks:
         background: transparent
         style: plain
         template: " ❯"
+secondary_prompt:
+  type: text
+  foreground: green
+  background: transparent
+  template: "❯❯ "
 transient_prompt:
   type: text
+  newline: true
   template: "<#a8a8a8>{{ .Segments.Path.Path }}</> ❯ "
   foreground: green
   foreground_templates:
     - "{{ if gt .Code 0 }}red{{ end }}"
     - "{{ if eq .Code 0 }}green{{ end }}"
   background: transparent
-secondary_prompt:
-  type: text
-  foreground: green
-  background: transparent
-  template: "❯❯ "
