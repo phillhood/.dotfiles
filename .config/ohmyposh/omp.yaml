@@ -1,0 +1,94 @@
+$schema: https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+version: 3
+console_title_template: "{{ .Folder }}"
+enable_cursor_positioning: true
+final_space: true
+iterm_features:
+  - current_dir
+  - remote_host
+blocks:
+  - alignment: left
+    type: prompt
+    newline: true
+    segments:
+      - type: os
+        foreground: "#FFFFFF"
+        leading_diamond: ╭─
+        style: diamond
+        template: " {{ if .WSL }}WSL at {{ end }}{{.Icon}} "
+      - type: path
+        foreground: "#77E4F7"
+        properties:
+          style: full
+        style: plain
+        template: "{{ .Path }} "
+      - type: git
+        foreground: "lightBlue"
+        foreground_templates:
+          - "{{ if or (.Working.Changed) (.Staging.Changed) }}#FFEB3B{{ end }}"
+          - "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}"
+          - "{{ if gt .Ahead 0 }}#B388FF{{ end }}"
+          - "{{ if gt .Behind 0 }}#B388FB{{ end }}"
+        style: plain
+        template: "{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}"
+        properties:
+          branch_icon: "\uE0A0 "
+          fetch_status: true
+          fetch_upstream_icon: true
+  - alignment: right
+    type: prompt
+    segments:
+      - type: node
+        foreground: "#ffffff"
+        properties:
+          fetch_version: true
+        style: plain
+        template:
+          " {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{
+          .Full }}  "
+      - type: python
+        style: plain
+        foreground: lightGreen
+        template: "{{ if .Venv }}  {{.Venv}}{{ end }}"
+      - type: executiontime
+        style: plain
+        foreground: "#808080"
+        template: "{{ .FormattedMs }}"
+        properties:
+          threshold: 500
+          style: austin
+      - type: time
+        foreground: "#00C5C7"
+        properties:
+          time_format: 3:04PM
+        style: plain
+        template: " {{ .CurrentDate | date .Format }} "
+  - alignment: left
+    type: prompt
+    newline: true
+    segments:
+      - type: text
+        foreground: "#d3d7cf"
+        style: plain
+        template: ╰─
+      - type: text
+        foreground: green
+        foreground_templates:
+          - "{{ if gt .Code 0 }}red{{ end }}"
+          - "{{ if eq .Code 0 }}green{{ end }}"
+        background: transparent
+        style: plain
+        template: " ❯"
+transient_prompt:
+  type: text
+  template: "<#a8a8a8>{{ .Segments.Path.Path }}</> ❯ "
+  foreground: green
+  foreground_templates:
+    - "{{ if gt .Code 0 }}red{{ end }}"
+    - "{{ if eq .Code 0 }}green{{ end }}"
+  background: transparent
+secondary_prompt:
+  type: text
+  foreground: green
+  background: transparent
+  template: "❯❯ "
