@@ -1,6 +1,0 @@
-kubectl create ns phantom
-kubectl create ns phantom-postback
-kubectl create ns postgres-operator
-kubectl label ns postgres-operator name=postgres-operator
-kubectl config set-context maverick --namespace=phantom
-kubectl label nodes maverick workload=reporting

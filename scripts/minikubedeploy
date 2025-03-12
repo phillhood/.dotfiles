@@ -1,9 +1,0 @@
-#!/usr/bin/env zshapplication_default_credentials.json
-CPU=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
-MEM=$(expr `grep MemTotal /proc/meminfo | awk '{print $2}'` / 1024)
-CPU_ALLOC=$(expr $CPU / 2)
-MEM_ALLOC=$(expr $MEM / 2)
-minikube config set cpus $CPU_ALLOC
-minikube config set memory $MEM_ALLOC
-echo "Starting minikube with $CPU_ALLOC CPUs and $MEM_ALLOC Mb RAM"
-minikube start
