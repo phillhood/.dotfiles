@@ -33,7 +33,7 @@ autoload -U compinit && compinit
 # vim mode
 # bindkey -v
 # double tap Tab for autosuggest
-# bindkey '\t\t' autosuggest-accept
+bindkey '\t\t' autosuggest-accept
 # history search
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
@@ -70,6 +70,12 @@ alias c='clear'
 alias ~='cd ~'
 alias ..='cd ..'
 alias vim=nvim
+alias loadenv="setopt allexport ; . ./.env ; unsetopt allexport"
+
+# Load custom shell scripts and functions
+for file in $HOME/.config/custom_shell/*; do
+  [ -r "$file" ] && source "$file"
+done
 
 # Shell integrations
 eval "$(fzf --zsh)"
@@ -87,3 +93,15 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # Conda Init 
 source "$HOME/.config/conda/conda_init.$(uname).zsh"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/phill/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+# Go
+export GOPATH=$HOME/go
+# SOPS age
+export SOPS_AGE_KEY_FILE=$HOME/.age/dev.txt
+# Startup base conda env
+conda activate
+

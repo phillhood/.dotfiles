@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+# Simple shell benchmark
+shellbench() {
+  for i in $(seq 1 10)
+    do /usr/bin/time $SHELL -i -c exit 
+  done
+}
+
+# Get escaped unicode sequence for emoji
+# 
+emocode() {
+  python -c "import json; print(json.dumps($1))"
+}
+
+
+
