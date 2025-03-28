@@ -1,14 +1,42 @@
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
+# Custom conda init configuration
+# Make sure to not run `conda init` or remove the generated block from shell config
+
+# Lazyload conda init for faster shell
+conda_lazy_load() {
+  # Capture caller command and shift args
+  local cmd="$1"
+  shift
+
+  local conda_paths=(
+    "/opt/homebrew/bin/conda"
+    "/opt/homebrew/Caskroom/miniforge/base/bin/conda"
+    "/usr/local/Caskroom/miniconda/base/bin/conda"
+    "/opt/homebrew/Caskroom/miniconda/base/bin/conda"
+  )
+  # Unset the lazy loader for the given command so that future calls use the real command.
+  unset -f "$cmd"
+  # Run conda init hook and then run the command with original arguments
+  for conda_path in "${conda_paths[@]}"; do
+    if [ -f "$conda_path" ]; then
+      eval "$($conda_path shell.zsh hook)"
+      "$cmd" "$@"
+      return
     fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+  done
+  echo "No conda installation found..."
+}
+
+# Wrapper for lazy loading conda
+conda() { conda_lazy_load conda "$@"; }
+
+# Wrapper for lazy loading python
+python() { conda_lazy_load python "$@"; }
+
+# Conda aliases
+alias cact='conda activate'
+alias cdeact='conda deactivate'
+alias cls='conda list'
+alias cels='conda env list'
+alias ccen='conda create --name'
+alias conup='conda update'
+alias conin='conda install'

@@ -81,15 +81,18 @@ done
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
+# Speed up fzf
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --walker-skip=Library,.git,node_modules"
+
 # OS-specific configs
-# case $(uname) in
-#   Darwin)
-#     # macOS configs
-#   ;;
-#   Linux)
-#     # Linux configs
-#   ;;
-# esac
+case $(uname) in
+  Darwin)
+    # macOS configs
+  ;;
+  Linux)
+    # Linux configs
+  ;;
+esac
 
 # Conda Init 
 source "$HOME/.config/conda/conda_init.$(uname).zsh"
@@ -102,6 +105,4 @@ compinit
 export GOPATH=$HOME/go
 # SOPS age
 export SOPS_AGE_KEY_FILE=$HOME/.age/dev.txt
-# Startup base conda env
-conda activate
 

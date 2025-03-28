@@ -2,16 +2,20 @@
 
 # Simple shell benchmark
 shellbench() {
-  for i in $(seq 1 10)
+  for i in $(seq 1 5)
     do /usr/bin/time $SHELL -i -c exit 
   done
 }
 
-# Get escaped unicode sequence for emoji
-# 
+# Get escaped unicode sequence for an emoji and copy to clipboard
 emocode() {
-  python -c "import json; print(json.dumps($1))"
+  local output=$(python -X utf8 -c 'import json, sys; s = json.dumps(sys.argv[1]); print(s[1:-1])' "$1")
+  case "$(uname)" in
+    Darwin)
+      printf "%s" $output | pbcopy
+      ;;
+    Linux)
+      printf "%s" $output | xclip -sel clipboard
+      ;;
+  esac
 }
-
-
-
