@@ -71,8 +71,6 @@ alias ~='cd ~'
 alias ..='cd ..'
 alias vim=nvim
 alias loadenv="setopt allexport ; . ./.env ; unsetopt allexport"
-# alternative to loadenv
-alias exportenv="export $(cat .env | xargs)"
 
 # Load custom shell scripts and functions
 for file in $HOME/.config/custom_shell/*; do
