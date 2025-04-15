@@ -71,6 +71,8 @@ alias ~='cd ~'
 alias ..='cd ..'
 alias vim=nvim
 alias loadenv="setopt allexport ; . ./.env ; unsetopt allexport"
+# alternative to loadenv
+alias exportenv="export $(cat .env | xargs)"
 
 # Load custom shell scripts and functions
 for file in $HOME/.config/custom_shell/*; do
@@ -106,3 +108,8 @@ export GOPATH=$HOME/go
 # SOPS age
 export SOPS_AGE_KEY_FILE=$HOME/.age/dev.txt
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
