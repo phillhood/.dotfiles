@@ -72,8 +72,8 @@ alias ..='cd ..'
 alias vim=nvim
 alias loadenv="setopt allexport ; . ./.env ; unsetopt allexport"
 
-# Load custom shell scripts and functions
-for file in $HOME/.config/custom_shell/*; do
+# Load personal shell utils 
+for file in $HOME/.config/utils/*; do
   [ -r "$file" ] && source "$file"
 done
 

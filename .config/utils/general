@@ -20,6 +20,7 @@ emocode() {
   esac
 }
 
+# Export all vars in a .env file to the current shell
 exportenv() {
   if [ -f .env ]; then
     export $(cat .env | xargs)
