@@ -3,6 +3,9 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+## ~/.local/bin path
+export PATH="$HOME/.local/bin:$PATH"
+
 ## Zinit 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
@@ -65,7 +68,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 ## Aliases
 alias ls='ls --color'
-alias lsa='ls -A --color'
+alias la='ls -A --color'
 alias c='clear'
 alias ~='cd ~'
 alias ..='cd ..'
@@ -77,34 +80,47 @@ for file in $HOME/.config/utils/*; do
   [ -r "$file" ] && source "$file"
 done
 
-# Shell integrations
-eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
-
 # Speed up fzf
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --walker-skip=Library,.git,node_modules"
 
 ## OS-specific configs
 case $(uname) in
+  # macOS configs
   Darwin)
-    # macOS configs
+    conda_init_os="Darwin"
+    # Docker CLI
+    fpath=(/Users/phill/.docker/completions $fpath)
   ;;
+  # Linux configs
   Linux)
-    # Linux configs
+    # WSL configs
+    if [[ $(systemd-detect-virt) = wsl ]]; then
+      conda_init_os="WSL"
+      # Ignore stupid Windows permissions (all users write access...) for directory colors
+      LS_COLORS=$LS_COLORS:'ow=1;34:' ; export LS_COLORS
+      # fzf path
+      [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    else
+      conda_init_os="Linux"
+    fi
   ;;
 esac
 
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
 ## Tools (TODO: move to .config/...)
 # Conda Init 
-source "$HOME/.config/conda/conda_init.$(uname).zsh"
+
+source "$HOME/.config/conda/conda_init.$conda_init_os.zsh"
 # Go
 export GOPATH=$HOME/go
 # SOPS age
 export SOPS_AGE_KEY_FILE=$HOME/.age/dev.txt
 # Github Copilot CLI Alias
-eval "$(gh copilot alias -- zsh)"
-# Docker CLI
-fpath=(/Users/phill/.docker/completions $fpath)
+# eval "$(gh copilot alias -- zsh)"
+
 autoload -Uz compinit
 compinit
 # nvm
