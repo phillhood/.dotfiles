@@ -38,7 +38,7 @@ My personal dotfiles for macOS, Linux, and WSL, and suite of installation script
     ``` 
 2. Run this command: 
     ```shell
-    bash cd ~/.dotfiles && sudo bash _setup/installer 
+    cd ~/.dotfiles && sudo bash _setup/installer 
     ```
 3. Wait for SupaHotFire to _spit some bars_
 #### Selected Installations:
