@@ -1,27 +1,52 @@
 # Dotfiles
 
-Easy symlink management for all my dotfiles!
+My personal dotfiles for macOS, Linux, and WSL, and suite of installation scripts for bootstrapping a new machine. Forever a work in progress. Needs more memes.
 
-## Requirements
 
-- GNU Stow
 
-`<package_manager> install stow`
+### Development
+|||
+|-|-|
+| Go | [go](https://docs.docker.com/engine/install/)
+| Python | [conda](https://www.anaconda.com/docs/getting-started/miniconda/main0)  |
+| Node.js | [nvm](https://github.com/nvm-sh/nvm)
+| Virtualization | [docker](https://docs.docker.com/engine/install/) |
 
-## Shell
+### Config Management
+|||
+|-|-|
+| Version Control | [git](https://git-scm.com/) |
+| Symlink Manager | [stow](https://www.gnu.org/software/stow/) | 
 
-Custom zsh config inspired by [Elliot Minns](https://github.com/elliottminns)
+### Command Line
+|||
+|-|-|
+| Shell | [zsh](https://zsh.sourceforge.io/) |
+| Package Manager | [zinit](https://github.com/zdharma-continuum/zinit?tab=readme-ov-file#install) |
+| Fuzzy Finding | [fzf](https://githib.com/junegunn/fzf) |
+| Smart Navigation | [zoxide](https://github.com/ajeetdsouza/zoxide) |
+| Prompt Styling | [oh my posh](https://ohmyposh.dev/docs) |
+| Multiplexer | [tmux](https://github.com/tmux/tmux/wiki)
 
-### Requirements
 
-1. **Shell:** [Zsh](https://zsh.sourceforge.io/)
-2. **Package Manager:** [zinit](https://github.com/zdharma-continuum/zinit?tab=readme-ov-file#install)
-3. **Prompt:** [oh-my-posh](https://ohmyposh.dev/docs)
+## Usage
+### Installation
+#### For fresh installs:
+1. Clone/copy this repo into `~/.dotfiles`
+    ```shell
+    git clone git@github.com:phillhood/dotfiles.git
+    ``` 
+2. Run this command: 
+    ```shell
+    bash cd ~/.dotfiles && sudo bash _setup/installer 
+    ```
+3. Wait for SupaHotFire to _spit some bars_
+#### Selected Installations:
 
-### Usage
 
-1. Clone this repo into `~/.dotfiles`
-2. Move or create any configs or dotfiles to stow into `~/.dotfiles`. Make sure they have the same structure as they would within `~/`
-3. Stow them when inside this directory `stow .`
-4. Files can be accessed or modifed by directly referencing their symlinks in `~/`
-5. Make sure to commit and push to this repo for the future!
+
+### Updating configs
+1. Move configs within `~/` into `~/.dotfiles`. Make sure they have the same structure as they would within `~/` and `~/.config/`
+2. Stow them from the root path of this repo `cd ~/.dotfiles && stow .`
+3. Files can be accessed or modifed by directly referencing their symlinks in `~/..`
+4. Commit and push changes to the repo

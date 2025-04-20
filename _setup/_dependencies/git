@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "----- Installing git..."
+case $1 in
+  ubuntu|debian|pop|mint|elementary)
+    apt install -y git >> /var/log/setup.log 2>&1
+    ;;
+  arch|manjaro)
+    pacman -Syu --noconfirm git >> /var/log/setup.log 2>&1
+    ;;
+  darwin)
+    brew install git >> /var/log/setup.log 2>&1
+    ;;
+  *)
+    echo "Bruh why are you using this distro - install git manually"
+    return 1
+    ;;
+esac
