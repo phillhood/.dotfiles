@@ -19,6 +19,10 @@ zinit light Aloxaf/fzf-tab
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::aws
+zinit snippet OMZP::colorize
+zinit snippet OMZP::docker
+zinit snippet OMZP::doctl
+# zinit snippet OMZP::emoji
 zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
@@ -82,7 +86,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
 # Speed up fzf
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --walker-skip=Library,.git,node_modules"
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --walker-skip=Library,Applications,.git,node_modules"
 
 ## OS-specific configs
 case $(uname) in
