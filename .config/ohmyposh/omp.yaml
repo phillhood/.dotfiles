@@ -15,7 +15,7 @@ blocks:
         foreground: "#FFFFFF"
         leading_diamond: ╭─
         style: diamond
-        template: " {{ if .WSL }}WSL at {{ end }}{{.Icon}} "
+        template: " {{.Icon}}{{ if .WSL }}{{ end }} "
       - type: path
         foreground: "#77E4F7"
         properties:

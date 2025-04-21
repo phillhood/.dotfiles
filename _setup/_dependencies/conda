@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "----- Installing miniconda..."
+install_location=/opt/miniconda3
+mkdir -p $install_location
+wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $install_location/miniconda.sh
+sh $install_location/miniconda.sh -b -u -p $install_location >> /var/log/setup.log 2>&1
+rm $install_location/miniconda.sh
+

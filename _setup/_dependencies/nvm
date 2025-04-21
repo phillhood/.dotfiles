@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "----- Installing nvm..."
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash >> /var/log/setup.log 2>&1

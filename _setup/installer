@@ -1,0 +1,59 @@
+#!/bin/bash
+
+echo "Initializing fresh system install..."
+
+# Get distro for certain dependencies
+detect_distro() {
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    distro=$ID
+  elif type lsb_release >/dev/null 2>&1; then
+    distro=$(lsb_release -si | tr '[:upper:]' '[:lower:]')
+  elif [ -f /etc/lsb-release ]; then
+    . /etc/lsb-release
+    distro=$DISTRIB_ID
+  elif [ -f /etc/debian_version ]; then
+    distro="debian"
+  else
+    distro=$(uname -s)
+  fi
+  echo $distro
+}
+
+# Source and export dependency vars and funcs for future subshells
+DISTRO=$(detect_distro) && export DISTRO
+SETUP_DIR=$HOME/.dotfiles/_setup && export SETUP_DIR
+
+# Install zsh first
+echo "----- Installing zsh..."
+case $DISTRO in
+  ubuntu|debian|pop|mint|elementary)
+    apt update > /var/log/setup.log 2>&1 && apt install -y zsh curl wget unzip > /var/log/setup.log 2>&1
+    ;;
+  arch|manjaro)
+    pacman -Syu --noconfirm zsh  > /var/log/setup.log 2>&1
+    ;;
+  darwin)
+    brew update > /var/log/setup.log 2>&1 && brew install zsh  > /var/log/setup.log 2>&1
+    ;;
+  *)
+    echo "Bruh why are you using this distro - install zsh manually"
+    return 1
+    ;;
+esac
+chsh -s $(which zsh)
+
+
+# Install everything else within zsh for installer shell configs
+zsh -c "
+  for file in $SETUP_DIR/_dependencies/*; do
+    if [ -r \"\$file\" ]; then
+      . \"\$file\" $DISTRO
+    fi
+  done
+"
+# Bars
+zsh $SETUP_DIR/_kek/butHesNotaRapper
+
+# Remove default zshrc, stow shell configs and run first time init
+rm $HOME/.zshrc && cd $HOME/.dotfiles && stow . && exec zsh

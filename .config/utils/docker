@@ -3,7 +3,7 @@
 ###### Docker Utilities ######
 
 # Formatted docker stats sorted by container name
-function dockstats() {
+dockstats() {
     watch -n 1 'STATS=$(docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\t{{.PIDs}}") && 
     HEADER=$(echo "$STATS" | head -n 1) && 
     DATA=$(echo "$STATS" | tail -n +2 | sort) && 
@@ -12,7 +12,7 @@ function dockstats() {
 
 # Color-coded docker logs for all containers, with a custom prefix to share colors between similarly named containers
 # Usage: alllogs [prefix]
-function docklogs() {
+docklogs() {
   local pids=()
   local colors=("31" "32" "33" "34" "35" "36" "37" "91" "92" "93" "94" "95" "96")
   local color_map=()

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "----- Installing stow..."
+case $1 in
+  ubuntu|debian|pop|mint|elementary)
+    apt install -y stow >> /var/log/setup.log 2>&1
+    ;;
+  arch|manjaro)
+    pacman -Syu --noconfirm stow >> /var/log/setup.log 2>&1
+    ;;
+  darwin)
+    brew install stow >> /var/log/setup.log 2>&1
+    ;; 
+  *)
+    echo "Bruh why are you using this distro - install stow manually"
+    return 1
+    ;;
+esac
