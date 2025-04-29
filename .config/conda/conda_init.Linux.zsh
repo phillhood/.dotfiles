@@ -1,11 +1,17 @@
 # Custom conda init configuration
 # Make sure to not run `conda init` or remove the generated block from shell config
 
+export CONDA_AUTO_ACTIVATE_BASE=false
+
 # Lazyload conda init for faster shell
 conda_lazy_load() {
   # Capture caller command and shift args
   local cmd="$1"
   shift
+
+  # save the original PYTHONPATH and clear to avoid conflicts
+  local _original_pythonpath="$PYTHONPATH"
+  export PYTHONPATH=""
 
   local conda_paths=(
     "/opt/miniconda3/bin/conda"
@@ -22,13 +28,17 @@ conda_lazy_load() {
     fi
   done
   echo "No conda installation found... (check ~/.config/conda/conda_init.Linux.zsh)"
+  # Restore original PYTHONPATH if conda not found
+  export PYTHONPATH="$_original_pythonpath"
 }
 
 # Wrapper for lazy loading conda
-conda() { conda_lazy_load conda "$@"; }
-
-# Wrapper for lazy loading python
-python() { conda_lazy_load python "$@"; }
+conda() { 
+  local _original_pythonpath="$PYTHONPATH"
+  export PYTHONPATH=""
+  conda_lazy_load conda "$@";
+  [[ -z "$CONDA_PREFIX" ]] && export PYTHONPATH="$_original_pythonpath"
+}
 
 # Conda aliases
 alias cact='conda activate'

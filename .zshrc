@@ -94,6 +94,7 @@ case $(uname) in
     conda_init_os="Darwin"
     # Docker CLI
     fpath=(/Users/phill/.docker/completions $fpath)
+    export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
   ;;
   # Linux configs
   Linux)
@@ -107,28 +108,26 @@ case $(uname) in
     else
       conda_init_os="Linux"
     fi
+    export PYTHONPATH="/usr/lib/python3/dist-packages:$PYTHONPATH"
   ;;
 esac
-
+lib
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
 ## Tools (TODO: move to .config/...)
 # Conda Init 
-
 source "$HOME/.config/conda/conda_init.$conda_init_os.zsh"
 # Go
 export GOPATH=$HOME/go
 # SOPS age
 export SOPS_AGE_KEY_FILE=$HOME/.age/dev.txt
-# Github Copilot CLI Alias
-# eval "$(gh copilot alias -- zsh)"
 
-autoload -Uz compinit
-compinit
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+autoload -Uz compinit
+compinit
