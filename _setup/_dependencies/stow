@@ -3,13 +3,13 @@
 echo "----- Installing stow..."
 case $1 in
   ubuntu|debian|pop|mint|elementary)
-    apt install -y stow >> /var/log/setup.log 2>&1
+    apt install -y stow >> $SETUP_LOG 2>&1
     ;;
   arch|manjaro)
-    pacman -Syu --noconfirm stow >> /var/log/setup.log 2>&1
+    pacman -Syu --noconfirm stow >> $SETUP_LOG 2>&1
     ;;
   darwin)
-    brew install stow >> /var/log/setup.log 2>&1
+    brew install stow >> $SETUP_LOG 2>&1
     ;; 
   *)
     echo "Bruh why are you using this distro - install stow manually"

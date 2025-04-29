@@ -1,4 +1,4 @@
 #!/bin/bash
 
 echo "----- Installing zoxide..."
-wget -qO- https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash >> /var/log/setup.log 2>&1
+wget -qO- https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash >> $SETUP_LOG 2>&1

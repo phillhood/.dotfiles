@@ -1,5 +1,5 @@
 #!/bin/bash
 
 echo "----- Installing fzf..."
-git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf >> /var/log/setup.log 2>&1
-/opt/fzf/install --all >> /var/log/setup.log 2>&1
+git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf >> $SETUP_LOG 2>&1
+/opt/fzf/install --all >> $SETUP_LOG 2>&1

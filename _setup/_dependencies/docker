@@ -2,7 +2,7 @@
 
 echo "----- Installing docker..."
 wget -q https://get.docker.com -O get-docker.sh
-sh get-docker.sh >> /var/log/setup.log 2>&1
+sh get-docker.sh >> $SETUP_LOG 2>&1
 rm get-docker.sh
 
 ## right way - TODO: add versions other than ubuntu 

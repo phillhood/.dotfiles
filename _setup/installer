@@ -23,18 +23,19 @@ detect_distro() {
 # Source and export dependency vars and funcs for future subshells
 DISTRO=$(detect_distro) && export DISTRO
 SETUP_DIR=$HOME/.dotfiles/_setup && export SETUP_DIR
+SETUP_LOG=/var/log/setup.log && export SETUP_LOG
 
 # Install zsh first
 echo "----- Installing zsh..."
 case $DISTRO in
   ubuntu|debian|pop|mint|elementary)
-    apt update > /var/log/setup.log 2>&1 && apt install -y zsh curl wget unzip > /var/log/setup.log 2>&1
+    apt update > $SETUP_LOG 2>&1 && apt install -y zsh curl wget unzip > $SETUP_LOG 2>&1
     ;;
   arch|manjaro)
-    pacman -Syu --noconfirm zsh  > /var/log/setup.log 2>&1
+    pacman -Syu --noconfirm zsh  > $SETUP_LOG 2>&1
     ;;
   darwin)
-    brew update > /var/log/setup.log 2>&1 && brew install zsh  > /var/log/setup.log 2>&1
+    brew update > $SETUP_LOG 2>&1 && brew install zsh  > $SETUP_LOG 2>&1
     ;;
   *)
     echo "Bruh why are you using this distro - install zsh manually"

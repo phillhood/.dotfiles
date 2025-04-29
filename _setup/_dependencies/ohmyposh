@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 echo "----- Installing oh my posh..."
-wget -qO- https://ohmyposh.dev/install.sh | bash -s >> /var/log/setup.log 2>&1
+wget -qO- https://ohmyposh.dev/install.sh | bash -s >> $SETUP_LOG 2>&1
