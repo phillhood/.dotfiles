@@ -111,7 +111,7 @@ case $(uname) in
     export PYTHONPATH="/usr/lib/python3/dist-packages:$PYTHONPATH"
   ;;
 esac
-lib
+
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
