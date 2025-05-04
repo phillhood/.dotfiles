@@ -10,21 +10,29 @@ if command -v docker &> /dev/null; then
   return 0
 fi
 
-# install docker via pacman if on arch
-if [[ $1 == "arch" || $1 == "manjaro" ]]; then
+case $1 in
+ubuntu | debian | pop | mint | elementary)
+  # TODO: add proper way (see commented code below)
+  wget -q https://get.docker.com -O get-docker.sh
+  sh get-docker.sh >> $SETUP_LOG 2>&1
+  rm get-docker.sh
+  ;;
+arch | manjaro)
   pacman -Syu --noconfirm docker >> $SETUP_LOG 2>&1
   systemctl start docker
   systemctl enable docker
-
-  msg="----- docker installation complete"
-  echo $msg | tee -a $SETUP_LOG 2>&1
-  touch $MARKER_DIR/docker
-  return 0
-fi
-
-wget -q https://get.docker.com -O get-docker.sh
-sh get-docker.sh >> $SETUP_LOG 2>&1
-rm get-docker.sh
+  ;;
+darwin)
+  # TODO: add proper way (see commented code below)
+  wget -q https://get.docker.com -O get-docker.sh
+  sh get-docker.sh >> $SETUP_LOG 2>&1
+  rm get-docker.sh
+  ;;
+*)
+  echo "bruh why are you using this distro - install fastfetch manually"
+  return 1
+  ;;
+esac
 
 msg="----- docker installation complete"
 echo $msg | tee -a $SETUP_LOG 2>&1

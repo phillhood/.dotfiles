@@ -1,0 +1,23 @@
+#!/bin/bash
+
+msg="----- installing fastfetch..."
+echo $msg | tee -a $SETUP_LOG 2>&1 
+
+case $1 in
+ubuntu | debian | pop | mint | elementary)
+  apt install -y fastfetch >> $SETUP_LOG 2>&1
+  ;;
+arch | manjaro)
+  pacman -Syu --noconfirm fastfetch >> $SETUP_LOG 2>&1
+  ;;
+darwin)
+  brew install fastfetch >> $SETUP_LOG 2>&1
+  ;;
+*)
+  echo "bruh why are you using this distro - install fastfetch manually" | tee -a $SETUP_LOG 2>&1
+  return 1
+  ;;
+esac
+
+msg="----- fastfetch installation complete"
+echo $msg | tee -a $SETUP_LOG 2>&1    

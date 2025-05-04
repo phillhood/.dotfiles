@@ -19,7 +19,7 @@ case $1 in
     brew install stow >> $SETUP_LOG 2>&1
     ;; 
   *)
-    echo "Bruh why are you using this distro - install stow manually"
+    echo "bruh why are you using this distro - install stow manually"
     return 1
     ;;
 esac

@@ -21,7 +21,7 @@ if ! command -v unzip &> /dev/null; then
       brew install unzip >> $SETUP_LOG 2>&1
       ;;
     *)
-      echo "Bruh why are you using this distro - install unzip manually"
+      echo "bruh why are you using this distro - install unzip manually"
       return 1
       ;;
   esac

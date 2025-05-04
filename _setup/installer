@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Initializing fresh system install..."
+echo "Initializing fresh system install..." | tee -a $SETUP_LOG 2>&1
 
 # Get distro for certain dependencies
 detect_distro() {
@@ -28,36 +28,47 @@ SETUP_LOG=$HOME/.dotfiles/_setup/logs/setup.log && export SETUP_LOG
 MARKER_DIR=$HOME/.dotfiles/_setup/markers && export MARKER_DIR
 mkdir -p $MARKER_DIR
 
-# Install zsh first
+# Install zsh and basic dependencies first
 echo "----- Installing zsh..."
 case $DISTRO in
   ubuntu|debian|pop|mint|elementary)
     sudo apt update > $SETUP_LOG 2>&1 && apt install -y zsh curl wget unzip > $SETUP_LOG 2>&1
     ;;
   arch|manjaro)
-    sudo pacman -Syu --noconfirm zsh > $SETUP_LOG 2>&1
+    sudo pacman -Syu --noconfirm zsh curl wget unzip > $SETUP_LOG 2>&1
     ;;
   darwin)
-    brew update > $SETUP_LOG 2>&1 && brew install zsh > $SETUP_LOG 2>&1
+    brew update > $SETUP_LOG 2>&1 && brew install zsh curl wget unzip > $SETUP_LOG 2>&1
     ;;
   *)
-    echo "Bruh why are you using this distro - install zsh manually"
+    echo "bruh why are you using this distro - install zsh,curl,wget,unzip manually" | tee -a $SETUP_LOG 2>&1
     return 1
     ;;
 esac
 
 PATH=/usr/bin:$PATH && export PATH
-echo $(which zsh)
 chsh -s $(which zsh)
 
 # Install everything else within zsh for installer shell configs
-sudo -E zsh << EOF
+sudo -E -u $SUDO_USER zsh << EOF
   for file in $SETUP_DIR/_dependencies/*; do
     if [ -r "\$file" ]; then
       . "\$file" $DISTRO
     fi
   done
+  for file in $SETUP_DIR/_dependencies/utils/*; do
+    if [ -r "\$file" ]; then
+      . "\$file" $DISTRO
+    fi
+  done
 EOF
+
+echo "----- Successfully installed dependencies:" | tee -a $SETUP_LOG 2>&1
+for file in $MARKER_DIR/*; do
+  if [ -r "\$file" ]; then
+    echo "  - $(basename \$file)"
+  fi
+done
 
 # Bars
 zsh $SETUP_DIR/_kek/butHesNotaRapper

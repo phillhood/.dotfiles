@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Using miniforge instead of miniconda for better compatibility with conda-forge packages
+# Using miniforge instead of miniconda for better compatibility with conda-forge package installation
 
 # echo "----- Installing miniconda..."
 # install_location=/opt/miniconda3
