@@ -2,11 +2,11 @@
 
 set -e
 
-msg="\n\n----- Installing docker..."
+msg="\n----- Installing docker..."
 echo $msg | tee -a $SETUP_LOG 2>&1
 
 if command -v docker &> /dev/null; then
-  echo "docker is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- docker is already installed" | tee -a $SETUP_LOG 2>&1
   return 0
 fi
 
@@ -18,9 +18,9 @@ ubuntu | debian | pop | mint | elementary)
   rm get-docker.sh
   ;;
 arch | manjaro)
-  pacman -Syu --noconfirm docker >> $SETUP_LOG 2>&1
-  systemctl start docker
-  systemctl enable docker
+  sudo pacman -Syu --noconfirm docker >> $SETUP_LOG 2>&1
+  sudo systemctl start docker
+  sudo systemctl enable docker
   ;;
 darwin)
   # TODO: add proper way (see commented code below)

@@ -2,20 +2,37 @@
 
 set -e
 
-msg="\n\n----- Installing fzf..."
+msg="\n----- Installing fzf..."
 echo $msg | tee -a $SETUP_LOG 2>&1
 
 if command -v fzf &> /dev/null; then
-  echo "fzf is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- fzf is already installed" | tee -a $SETUP_LOG 2>&1
   return 0
 fi
 
-if [ -d "/opt/fzf" ]; then
-  echo "fzf repo already exists, skipping clone" | tee -a $SETUP_LOG 2>&1
-else
-  git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf >> $SETUP_LOG 2>&1
-fi
-/opt/fzf/install --all >> $SETUP_LOG 2>&1
+case $1 in
+ubuntu | debian | pop | mint | elementary)
+  sudo apt install -y fzf >> $SETUP_LOG 2>&1
+  ;;
+arch | manjaro)
+  sudo pacman -Syu --noconfirm fzf >> $SETUP_LOG 2>&1
+  ;;
+darwin)
+  brew install fzf >> $SETUP_LOG 2>&1
+  ;;
+*)
+  echo "bruh why are you using this distro - install fastfetch manually"
+  return 1
+  ;;
+esac
+
+# # install from source
+# if [ -d "/opt/fzf" ]; then
+#   echo "fzf repo already exists, skipping clone" | tee -a $SETUP_LOG 2>&1
+# else
+#   git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf >> $SETUP_LOG 2>&1
+# fi
+# /opt/fzf/install --all >> $SETUP_LOG 2>&1
 
 msg="----- fzf installation complete"
 echo $msg | tee -a $SETUP_LOG 2>&1

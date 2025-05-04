@@ -1,19 +1,21 @@
 #!/bin/bash
 
-msg="\n\n----- Installing git..."
+set -e
+
+msg="\n----- Installing git..."
 echo $msg | tee -a $SETUP_LOG 2>&1
 
 if command -v git &> /dev/null; then
-  echo "git is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- git is already installed" | tee -a $SETUP_LOG 2>&1
   return 0
 fi
 
 case $1 in
   ubuntu|debian|pop|mint|elementary)
-    apt install -y git >> $SETUP_LOG 2>&1
+    sudo apt install -y git >> $SETUP_LOG 2>&1
     ;;
   arch|manjaro)
-    pacman -Syu --noconfirm git >> $SETUP_LOG 2>&1
+    sudo pacman -Syu --noconfirm git >> $SETUP_LOG 2>&1
     ;;
   darwin)
     brew install git >> $SETUP_LOG 2>&1

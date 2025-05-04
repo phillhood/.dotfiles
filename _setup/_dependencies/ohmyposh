@@ -1,33 +1,18 @@
 #!/usr/bin/env bash
 
-msg="\n\n----- Installing oh my posh..."
+set -e
+
+msg="\n----- Installing oh my posh..."
 echo $msg | tee -a $SETUP_LOG 2>&1
 
 if command -v oh-my-posh &> /dev/null; then
-  echo "oh my posh is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- oh my posh is already installed" | tee -a $SETUP_LOG 2>&1
   return 0
 fi
 
-if ! command -v unzip &> /dev/null; then
-  echo "unzip is not installed, installing..." | tee -a $SETUP_LOG 2>&1
-  case $1 in
-    ubuntu|debian|pop|mint|elementary)
-      apt install -y unzip >> $SETUP_LOG 2>&1
-      ;;
-    arch|manjaro)
-      pacman -Syu --noconfirm unzip >> $SETUP_LOG 2>&1
-      ;;
-    darwin)
-      brew install unzip >> $SETUP_LOG 2>&1
-      ;;
-    *)
-      echo "bruh why are you using this distro - install unzip manually"
-      return 1
-      ;;
-  esac
-fi
-
-wget -qO- https://ohmyposh.dev/install.sh | bash -s >> $SETUP_LOG 2>&1
+# Run as the real user with local bin directory
+sudo -u $SUDO_USER bash -c "mkdir -p $USER_HOME/.local/bin && \
+  wget -qO- https://ohmyposh.dev/install.sh | bash -s -- -d $USER_HOME/.local/bin >> $SETUP_LOG 2>&1"
 
 msg="----- oh my posh installation complete"
 echo $msg | tee -a $SETUP_LOG 2>&1

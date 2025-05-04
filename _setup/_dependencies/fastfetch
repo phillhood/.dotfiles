@@ -1,6 +1,8 @@
 #!/bin/bash
 
-msg="----- installing fastfetch..."
+set -e
+
+msg="\n----- installing fastfetch..."
 echo $msg | tee -a $SETUP_LOG 2>&1 
 
 case $1 in

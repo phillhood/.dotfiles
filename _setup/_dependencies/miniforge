@@ -1,18 +1,20 @@
 #!/bin/bash
 
-msg="\n\n----- Installing miniforge..."
+set -e
+
+msg="\n----- Installing miniforge..."
 echo $msg | tee -a $SETUP_LOG 2>&1
 
 if command -v conda &> /dev/null; then
-  echo "miniforge is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- miniforge is already installed" | tee -a $SETUP_LOG 2>&1
   return 0
 fi
 
 install_location=/opt/miniforge3
 mkdir -p $install_location
 wget -q "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" -O $install_location/miniforge_install.sh
-sh $install_location/miniforge_install.sh -b -u -p $install_location >> $SETUP_LOG 2>&1
-rm $install_location/miniforge_install.sh
+sudo sh $install_location/miniforge_install.sh -b -u -p $install_location >> $SETUP_LOG 2>&1
+sudo rm $install_location/miniforge_install.sh
 
 msg="----- miniforge installation complete"
 echo $msg | tee -a $SETUP_LOG 2>&1

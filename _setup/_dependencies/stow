@@ -1,19 +1,21 @@
 #!/bin/bash
 
-msg="\n\n----- Installing stow..."
+set -e
+
+msg="\n----- Installing stow..."
 echo $msg | tee -a $SETUP_LOG 2>&1
 
 if command -v stow &> /dev/null; then
-  echo "stow is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- stow is already installed" | tee -a $SETUP_LOG 2>&1
   return 0
 fi
 
 case $1 in
   ubuntu|debian|pop|mint|elementary)
-    apt install -y stow >> $SETUP_LOG 2>&1
+    sudo apt install -y stow >> $SETUP_LOG 2>&1
     ;;
   arch|manjaro)
-    pacman -Syu --noconfirm stow >> $SETUP_LOG 2>&1
+    sudo pacman -Syu --noconfirm stow >> $SETUP_LOG 2>&1
     ;;
   darwin)
     brew install stow >> $SETUP_LOG 2>&1
