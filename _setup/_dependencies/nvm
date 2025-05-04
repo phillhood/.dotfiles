@@ -1,4 +1,14 @@
 #!/bin/bash
 
-echo "----- Installing nvm..."
+msg="\n\n----- Installing nvm..."
+echo $msg | tee -a $SETUP_LOG 2>&1
+
+if command -v nvm &> /dev/null; then
+  echo "nvm is already installed" | tee -a $SETUP_LOG 2>&1
+  return 0
+fi
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash >> $SETUP_LOG 2>&1
+
+msg="----- nvm installation complete"
+echo $msg | tee -a $SETUP_LOG 2>&1
+touch $MARKER_DIR/nvm
