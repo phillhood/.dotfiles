@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nSupaHot boutta bless this setup with some bars...\n"
+echo -e "\nSetup complete - time to spit some bars...\n"
 sleep 1
 echo -e "boom.."
 sleep 1

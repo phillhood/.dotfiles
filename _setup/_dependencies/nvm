@@ -2,18 +2,17 @@
 
 set -e
 
-msg="\n----- Installing nvm..."
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "\n----- Installing nvm..."
 
 if command -v nvm &> /dev/null; then
-  echo "----- nvm is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- nvm is already installed"
+  touch $MARKER_DIR/nvm
   return 0
 fi
 
 # Run as the real user with their home directory
 sudo -u $SUDO_USER bash -c "export NVM_DIR=\"$USER_HOME/.nvm\" && \
-  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash >> $SETUP_LOG 2>&1"
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash"
 
-msg="----- nvm installation complete"
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "----- nvm installation complete"
 touch $MARKER_DIR/nvm

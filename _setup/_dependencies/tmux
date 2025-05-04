@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing tmux..."
+
+if command -v tmux &> /dev/null; then
+  echo "----- tmux is already installed"
+  touch $MARKER_DIR/tmux
+  return 0
+fi
+
+case $1 in
+  ubuntu|debian|pop|mint|elementary)
+    sudo apt install -y tmux
+    ;;
+  arch|manjaro)
+    sudo pacman -Syu --noconfirm tmux
+    ;;
+  darwin)
+    brew install tmux
+    ;; 
+  *)
+    echo "bruh why are you using this distro - install tmux manually"
+    return 1
+    ;;
+esac
+
+echo "----- tmux installation complete"
+touch $MARKER_DIR/tmux

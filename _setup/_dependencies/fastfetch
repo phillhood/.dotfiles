@@ -2,24 +2,29 @@
 
 set -e
 
-msg="\n----- installing fastfetch..."
-echo $msg | tee -a $SETUP_LOG 2>&1 
+echo "\n----- installing fastfetch..."
+
+if command -v fastfetch &> /dev/null; then
+  echo "----- fastfetch is already installed"
+  touch $MARKER_DIR/fastfetch
+  return 0
+fi
 
 case $1 in
-ubuntu | debian | pop | mint | elementary)
-  apt install -y fastfetch >> $SETUP_LOG 2>&1
-  ;;
-arch | manjaro)
-  pacman -Syu --noconfirm fastfetch >> $SETUP_LOG 2>&1
-  ;;
-darwin)
-  brew install fastfetch >> $SETUP_LOG 2>&1
-  ;;
-*)
-  echo "bruh why are you using this distro - install fastfetch manually" | tee -a $SETUP_LOG 2>&1
-  return 1
-  ;;
+  ubuntu | debian | pop | mint | elementary)
+    apt install -y fastfetch
+    ;;
+  arch | manjaro)
+    pacman -Syu --noconfirm fastfetch
+    ;;
+  darwin)
+    brew install fastfetch
+    ;;
+  *)
+    echo "bruh why are you using this distro - install fastfetch manually"
+    return 1
+    ;;
 esac
 
-msg="----- fastfetch installation complete"
-echo $msg | tee -a $SETUP_LOG 2>&1    
+echo "----- fastfetch installation complete"
+ 

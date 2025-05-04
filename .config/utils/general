@@ -3,7 +3,7 @@
 # Simple shell benchmark
 shellbench() {
   for i in $(seq 1 5)
-    do /usr/bin/time $SHELL -i -c exit 
+    do time $SHELL -i -c exit 
   done
 }
 

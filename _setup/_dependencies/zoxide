@@ -2,17 +2,17 @@
 
 set -e
 
-msg="\n----- Installing zoxide..."
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "\n----- Installing zoxide..."
 
 if command -v zoxide &> /dev/null; then
-  echo "----- zoxide is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- zoxide is already installed"
+  touch $MARKER_DIR/zoxide
   return 0
 fi
 
 sudo -u $SUDO_USER bash -c "mkdir -p $USER_HOME/.local/bin && \
-  curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash >> $SETUP_LOG 2>&1"
+  curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
 
-msg="----- zoxide installation complete"
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "----- zoxide installation complete"
+
 touch $MARKER_DIR/zoxide

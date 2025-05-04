@@ -2,23 +2,23 @@
 
 set -e
 
-msg="\n----- Installing git..."
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "\n----- Installing git..."
 
 if command -v git &> /dev/null; then
-  echo "----- git is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- git is already installed"
+  touch $MARKER_DIR/git
   return 0
 fi
 
 case $1 in
   ubuntu|debian|pop|mint|elementary)
-    sudo apt install -y git >> $SETUP_LOG 2>&1
+    sudo apt install -y git
     ;;
   arch|manjaro)
-    sudo pacman -Syu --noconfirm git >> $SETUP_LOG 2>&1
+    sudo pacman -Syu --noconfirm git
     ;;
   darwin)
-    brew install git >> $SETUP_LOG 2>&1
+    brew install git
     ;;
   *)
     echo "bruh why are you using this distro - install git manually"
@@ -26,6 +26,5 @@ case $1 in
     ;;
 esac
 
-msg="----- git installation complete"
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "----- git installation complete"
 touch $MARKER_DIR/git

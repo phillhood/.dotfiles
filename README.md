@@ -55,3 +55,9 @@ My personal dotfiles for macOS, Linux, and WSL, and suite of installation script
 2. Stow them from the root path of this repo `cd ~/.dotfiles && stow .`
 3. Files can be accessed or modifed by directly referencing their symlinks in `~/..`
 4. Commit and push changes to the repo
+
+### TODO:
+- [ ] Bootstrap installer
+   - [ ] generic package installer with package param instead of duplicated scripts
+   - [ ] add CLI to supply manual lists of packages to install or default/all
+   - [ ] install scripts generate their own log file within `_setup/logs`

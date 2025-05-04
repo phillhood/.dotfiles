@@ -2,18 +2,16 @@
 
 set -e
 
-msg="\n----- Installing oh my posh..."
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "\n----- Installing ohmyposh..."
 
 if command -v oh-my-posh &> /dev/null; then
-  echo "----- oh my posh is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- ohmyposh is already installed" | tee -a $SETUP_LOG 2>&1
+  touch $MARKER_DIR/ohmyposh
   return 0
 fi
 
-# Run as the real user with local bin directory
 sudo -u $SUDO_USER bash -c "mkdir -p $USER_HOME/.local/bin && \
-  wget -qO- https://ohmyposh.dev/install.sh | bash -s -- -d $USER_HOME/.local/bin >> $SETUP_LOG 2>&1"
+  wget -qO- https://ohmyposh.dev/install.sh | bash -s -- -d $USER_HOME/.local/bin"
 
-msg="----- oh my posh installation complete"
-echo $msg | tee -a $SETUP_LOG 2>&1
-touch $MARKER_DIR/oh-my-posh
+echo "----- ohmyposh installation complete"
+touch $MARKER_DIR/ohmyposh

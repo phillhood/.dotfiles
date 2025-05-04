@@ -2,23 +2,23 @@
 
 set -e
 
-msg="\n----- Installing stow..."
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "\n----- Installing stow..."
 
 if command -v stow &> /dev/null; then
-  echo "----- stow is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "----- stow is already installed"
+  touch $MARKER_DIR/stow
   return 0
 fi
 
 case $1 in
   ubuntu|debian|pop|mint|elementary)
-    sudo apt install -y stow >> $SETUP_LOG 2>&1
+    sudo apt install -y stow
     ;;
   arch|manjaro)
-    sudo pacman -Syu --noconfirm stow >> $SETUP_LOG 2>&1
+    sudo pacman -Syu --noconfirm stow
     ;;
   darwin)
-    brew install stow >> $SETUP_LOG 2>&1
+    brew install stow
     ;; 
   *)
     echo "bruh why are you using this distro - install stow manually"
@@ -26,6 +26,5 @@ case $1 in
     ;;
 esac
 
-msg="----- stow installation complete"
-echo $msg | tee -a $SETUP_LOG 2>&1
+echo "----- stow installation complete"
 touch $MARKER_DIR/stow

@@ -121,6 +121,8 @@ eval "$(zoxide init --cmd cd zsh)"
 source "$HOME/.config/conda/conda_init.$os.zsh"
 # Go
 export GOPATH=$HOME/go
+export GOROOT=/usr/local/go
+export PATH=$PATH:/usr/local/go/bin
 # SOPS age
 export SOPS_AGE_KEY_FILE=$HOME/.age/dev.txt
 

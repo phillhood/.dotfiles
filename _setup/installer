@@ -17,7 +17,7 @@ MARKER_DIR=$USER_HOME/.dotfiles/_setup/markers && export MARKER_DIR
 mkdir -p $MARKER_DIR
 chown -R $SUDO_USER:$(id -gn $SUDO_USER) $SETUP_DIR
 
-echo "Initializing fresh system install..." | tee -a $SETUP_LOG 2>&1
+echo -e "\nInitializing fresh system install..." | tee -a $SETUP_LOG 2>&1
 
 # Get distro for certain dependencies
 detect_distro() {
@@ -39,11 +39,11 @@ detect_distro() {
 DISTRO=$(detect_distro) && export DISTRO
 
 # Install zsh and basic dependencies first
-echo -e "\n----- Installing zsh..."
+echo -e "\nInstalling zsh..."
 
 # check if zsh is already installed, else install it
 if command -v zsh &> /dev/null; then
-  echo "----- zsh is already installed" | tee -a $SETUP_LOG 2>&1
+  echo "  - zsh is already installed" | tee -a $SETUP_LOG 2>&1
 else
   case $DISTRO in
   ubuntu|debian|pop|mint|elementary)
@@ -65,19 +65,27 @@ fi
 
 PATH=/usr/bin:$PATH && export PATH
 sudo chsh -s $(which zsh) $SUDO_USER >> $SETUP_LOG 2>&1
-echo "----- Changed default shell to zsh for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
+echo "  - Changed default shell to zsh for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
 
 # Install dependencies and utils with zsh
+# for file in $SETUP_DIR/_dependencies/*; do
+#   if [ -r "$file" ]; then
+#     zsh $file $DISTRO
+#   fi
+# done
+echo -e "\nInstalling dependencies..."
 for file in $SETUP_DIR/_dependencies/*; do
   if [ -r "$file" ]; then
-    zsh $file $DISTRO
-  fi
-done
-
-echo -e "\n----- Successfully installed dependencies:" | tee -a $SETUP_LOG 2>&1
-for file in $MARKER_DIR/*; do
-  if [ -r "$file" ]; then
-    echo "  - $(basename $file)" | tee -a $SETUP_LOG 2>&1
+    dep_name=$(basename "$file")
+    echo -n "  - $dep_name..."
+    
+    zsh $file $DISTRO >> $SETUP_LOG 2>&1
+    
+    if [ -f "$MARKER_DIR/$dep_name" ]; then
+      echo " ✓"
+    else
+      echo " ✗"
+    fi
   fi
 done
 
