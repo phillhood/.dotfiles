@@ -1,6 +1,13 @@
 #!/bin/bash
 
-echo "----- Installing git..."
+msg="\n\n----- Installing git..."
+echo $msg | tee -a $SETUP_LOG 2>&1
+
+if command -v git &> /dev/null; then
+  echo "git is already installed" | tee -a $SETUP_LOG 2>&1
+  return 0
+fi
+
 case $1 in
   ubuntu|debian|pop|mint|elementary)
     apt install -y git >> $SETUP_LOG 2>&1
@@ -12,7 +19,11 @@ case $1 in
     brew install git >> $SETUP_LOG 2>&1
     ;;
   *)
-    echo "Bruh why are you using this distro - install git manually"
+    echo "bruh why are you using this distro - install git manually"
     return 1
     ;;
 esac
+
+msg="----- git installation complete"
+echo $msg | tee -a $SETUP_LOG 2>&1
+touch $MARKER_DIR/git

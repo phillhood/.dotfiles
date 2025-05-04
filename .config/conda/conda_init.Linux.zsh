@@ -15,6 +15,7 @@ conda_lazy_load() {
 
   local conda_paths=(
     "/opt/miniconda3/bin/conda"
+    "/opt/miniforge3/bin/conda"
     # Might need to add more paths for different install methods...
   )
   # Unset the lazy loader for the given command so that future calls use the real command.

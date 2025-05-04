@@ -1,9 +1,43 @@
 #!/bin/bash
 
-echo "----- Installing docker..."
-wget -q https://get.docker.com -O get-docker.sh
-sh get-docker.sh >> $SETUP_LOG 2>&1
-rm get-docker.sh
+set -e
+
+msg="\n\n----- Installing docker..."
+echo $msg | tee -a $SETUP_LOG 2>&1
+
+if command -v docker &> /dev/null; then
+  echo "docker is already installed" | tee -a $SETUP_LOG 2>&1
+  return 0
+fi
+
+case $1 in
+ubuntu | debian | pop | mint | elementary)
+  # TODO: add proper way (see commented code below)
+  wget -q https://get.docker.com -O get-docker.sh
+  sh get-docker.sh >> $SETUP_LOG 2>&1
+  rm get-docker.sh
+  ;;
+arch | manjaro)
+  pacman -Syu --noconfirm docker >> $SETUP_LOG 2>&1
+  systemctl start docker
+  systemctl enable docker
+  ;;
+darwin)
+  # TODO: add proper way (see commented code below)
+  wget -q https://get.docker.com -O get-docker.sh
+  sh get-docker.sh >> $SETUP_LOG 2>&1
+  rm get-docker.sh
+  ;;
+*)
+  echo "bruh why are you using this distro - install fastfetch manually"
+  return 1
+  ;;
+esac
+
+msg="----- docker installation complete"
+echo $msg | tee -a $SETUP_LOG 2>&1
+
+touch $MARKER_DIR/docker
 
 ## right way - TODO: add versions other than ubuntu 
 # apt-get install ca-certificates curl

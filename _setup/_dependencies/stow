@@ -1,6 +1,13 @@
 #!/bin/bash
 
-echo "----- Installing stow..."
+msg="\n\n----- Installing stow..."
+echo $msg | tee -a $SETUP_LOG 2>&1
+
+if command -v stow &> /dev/null; then
+  echo "stow is already installed" | tee -a $SETUP_LOG 2>&1
+  return 0
+fi
+
 case $1 in
   ubuntu|debian|pop|mint|elementary)
     apt install -y stow >> $SETUP_LOG 2>&1
@@ -12,7 +19,11 @@ case $1 in
     brew install stow >> $SETUP_LOG 2>&1
     ;; 
   *)
-    echo "Bruh why are you using this distro - install stow manually"
+    echo "bruh why are you using this distro - install stow manually"
     return 1
     ;;
 esac
+
+msg="----- stow installation complete"
+echo $msg | tee -a $SETUP_LOG 2>&1
+touch $MARKER_DIR/stow

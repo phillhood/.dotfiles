@@ -13,7 +13,7 @@
 #     brew update && brew install zsh
 #     ;;
 #   *)
-#     echo "Bruh why are you using this distro - install zsh manually"
+#     echo "bruh why are you using this distro - install zsh manually"
 #     return 1
 #     ;;
 # esac

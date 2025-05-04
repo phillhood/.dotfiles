@@ -1,5 +1,22 @@
 #!/bin/bash
 
-echo "----- Installing fzf..."
-git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf >> $SETUP_LOG 2>&1
+set -e
+
+msg="\n\n----- Installing fzf..."
+echo $msg | tee -a $SETUP_LOG 2>&1
+
+if command -v fzf &> /dev/null; then
+  echo "fzf is already installed" | tee -a $SETUP_LOG 2>&1
+  return 0
+fi
+
+if [ -d "/opt/fzf" ]; then
+  echo "fzf repo already exists, skipping clone" | tee -a $SETUP_LOG 2>&1
+else
+  git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf >> $SETUP_LOG 2>&1
+fi
 /opt/fzf/install --all >> $SETUP_LOG 2>&1
+
+msg="----- fzf installation complete"
+echo $msg | tee -a $SETUP_LOG 2>&1
+touch $MARKER_DIR/fzf
