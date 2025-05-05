@@ -41,7 +41,7 @@ My personal dotfiles for macOS, Linux, and WSL, and suite of installation script
    ```
 2. Run this command:
    ```shell
-   cd ~/.dotfiles/_setup && sudo bash installer
+   cd ~/.dotfiles/_setup && sudo bash setup
    ```
 3. Wait for SupaHotFire to _spit some bars_
 
@@ -57,7 +57,7 @@ My personal dotfiles for macOS, Linux, and WSL, and suite of installation script
 4. Commit and push changes to the repo
 
 ### TODO:
-- [ ] Bootstrap installer
+- System bootstrap installer
    - [ ] generic package installer with package param instead of duplicated scripts
    - [ ] add CLI to supply manual lists of packages to install or default/all
    - [ ] install scripts generate their own log file within `_setup/logs`
