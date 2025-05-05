@@ -1,0 +1,11 @@
+#!bin/zsh
+
+## Docker group
+if ! groups | grep -q docker; then
+  sudo usermod -aG docker $USER
+  newgrp docker
+fi
+
+## Aliases
+alias pacman='sudo pacman'
+

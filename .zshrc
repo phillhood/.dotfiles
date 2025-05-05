@@ -101,6 +101,23 @@ case $os in
 
   # Linux configs
   Linux)
+    # Distro-specific configs
+    if [ -f /etc/os-release ]; then
+      . /etc/os-release
+      distro=$ID
+    elif type lsb_release >/dev/null 2>&1; then
+      distro=$(lsb_release -si | tr '[:upper:]' '[:lower:]')
+    elif [ -f /etc/lsb-release ]; then
+      . /etc/lsb-release
+      distro=$DISTRIB_ID
+    elif [ -f /etc/debian_version ]; then
+      distro="debian"
+    else
+      distro="unknown"
+    fi
+    distro_file="$HOME/.config/utils/distro/$distro"
+    [ -r "$distro_file" ] && source "$distro_file"
+
     # WSL configs
     if [[ $(systemd-detect-virt) = wsl ]]; then
       # Ignore stupid Windows permissions (all users write access...) for directory colours
