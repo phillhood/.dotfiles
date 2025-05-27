@@ -53,7 +53,7 @@ blocks:
       - type: executiontime
         style: plain
         foreground: "#808080"
-        template: "{{ .FormattedMs }}"
+        template: " {{ .FormattedMs }}"
         properties:
           threshold: 500
           style: austin
