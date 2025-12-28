@@ -1,0 +1,63 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing fbterm..."
+
+# fbterm only makes sense on headless Linux systems
+case $1 in
+  darwin)
+    echo "----- fbterm is not needed on macOS (use iTerm2 or Terminal.app)"
+    touch $MARKER_DIR/fbterm
+    return 0
+    ;;
+esac
+
+# Check if we have a display server (X11 or Wayland)
+if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+  echo "----- Graphical environment detected, skipping fbterm"
+  touch $MARKER_DIR/fbterm
+  return 0
+fi
+
+# Check if systemd default target is graphical
+if command -v systemctl &> /dev/null; then
+  default_target=$(systemctl get-default 2>/dev/null || echo "")
+  if [ "$default_target" = "graphical.target" ]; then
+    echo "----- System configured for graphical boot, skipping fbterm"
+    touch $MARKER_DIR/fbterm
+    return 0
+  fi
+fi
+
+if command -v fbterm &> /dev/null; then
+  echo "----- fbterm is already installed"
+  touch $MARKER_DIR/fbterm
+  return 0
+fi
+
+case $1 in
+  ubuntu | debian | pop | mint | elementary)
+    apt install -y fbterm fontconfig
+    ;;
+  arch | manjaro)
+    pacman -Syu --noconfirm fbterm fontconfig
+    ;;
+  *)
+    echo "bruh why are you using this distro - install fbterm manually"
+    return 1
+    ;;
+esac
+
+# Add user to video group for non-root fbterm usage
+usermod -aG video $SUDO_USER
+
+# Create default config
+sudo -u $SUDO_USER bash -c "cat > $USER_HOME/.fbtermrc << 'EOF'
+font-names=MesloLGS Nerd Font Mono
+font-size=14
+EOF"
+
+echo "----- fbterm installation complete"
+echo "----- NOTE: Log out and back in for video group to take effect"
+touch $MARKER_DIR/fbterm

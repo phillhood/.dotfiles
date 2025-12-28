@@ -4,6 +4,27 @@ import sys
 import os
 import re
 import json
+import argparse
+
+# Standard color name to ANSI index mapping
+ANSI_MAP = {
+    "black": 0,
+    "red": 1,
+    "green": 2,
+    "yellow": 3,
+    "blue": 4,
+    "purple": 5,
+    "cyan": 6,
+    "white": 7,
+    "brightBlack": 8,
+    "brightRed": 9,
+    "brightGreen": 10,
+    "brightYellow": 11,
+    "brightBlue": 12,
+    "brightPurple": 13,
+    "brightCyan": 14,
+    "brightWhite": 15,
+}
 
 def convert_iterm2_to_winterm(iterm_colour):
     """Maps iTerm2 colour names to Windows Terminal names"""
@@ -53,26 +74,56 @@ def parse_iterm_colours(iterm_json):
 
     return winterm_json
 
-def main():
-    if len(sys.argv) < 3:
-        print(f"Usage: {sys.argv[0]} <Path to iterm profile json file > <Profile name>", file=sys.stderr)
-        sys.exit(1)
 
-    input_path = sys.argv[1]
+def convert_to_fbterm(colours_json):
+    """Convert standard colour JSON to fbterm config format"""
+    lines = []
+
+    if "foreground" in colours_json:
+        lines.append(f"color-foreground={colours_json['foreground'].lstrip('#')}")
+    if "background" in colours_json:
+        lines.append(f"color-background={colours_json['background'].lstrip('#')}")
+
+    for colour_name, index in ANSI_MAP.items():
+        if colour_name in colours_json:
+            hex_val = colours_json[colour_name].lstrip('#')
+            lines.append(f"color-{index}={hex_val}")
+
+    return "\n".join(lines)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Convert terminal colour profiles between formats")
+    parser.add_argument("input", help="Path to input colour profile (iTerm2 JSON or standard JSON)")
+    parser.add_argument("name", nargs="?", default=None, help="Profile name (required for iTerm2 input)")
+    parser.add_argument("-f", "--format", choices=["winterm", "fbterm"], default="winterm",
+                        help="Output format: winterm (default) or fbterm")
+    parser.add_argument("--from", dest="input_format", choices=["iterm", "standard"], default="iterm",
+                        help="Input format: iterm (default) or standard JSON")
+
+    args = parser.parse_args()
+
     try:
-        with open(input_path, "r") as file:
-            iterm_json = json.load(file)
+        with open(args.input, "r") as file:
+            input_json = json.load(file)
     except Exception as e:
         print(f"Error reading file: {e}", file=sys.stderr)
         sys.exit(1)
 
-    winterm_json = {
-        "name": sys.argv[2]
-    }
     try:
-        winterm_colors = parse_iterm_colours(iterm_json)
-        winterm_json.update(winterm_colors)
-        print(json.dumps(winterm_json, indent=2))
+        if args.input_format == "iterm":
+            if not args.name:
+                print("Profile name required for iTerm2 input", file=sys.stderr)
+                sys.exit(1)
+            colours = parse_iterm_colours(input_json)
+            colours["name"] = args.name
+        else:
+            colours = input_json
+
+        if args.format == "fbterm":
+            print(convert_to_fbterm(colours))
+        else:
+            print(json.dumps(colours, indent=2))
 
     except Exception as e:
         print(f"Error processing file: {e}", file=sys.stderr)

@@ -1,0 +1,7 @@
+homelab dependencies:
+
+- ansible
+- kubectx, kubens
+- direnv
+- argocd
+- kubeseal

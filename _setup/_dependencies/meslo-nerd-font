@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing MesloLGS Nerd Font..."
+
+# Determine font directory based on OS
+case $1 in
+  ubuntu | debian | pop | mint | elementary | arch | manjaro)
+    FONT_DIR="$USER_HOME/.local/share/fonts"
+    ;;
+  darwin)
+    FONT_DIR="$USER_HOME/Library/Fonts"
+    ;;
+  *)
+    echo "bruh why are you using this distro - install MesloLGS Nerd Font manually"
+    return 1
+    ;;
+esac
+
+# Check if already installed
+if ls "$FONT_DIR"/MesloLG*NerdFont* &> /dev/null; then
+  echo "----- MesloLGS Nerd Font is already installed"
+  touch $MARKER_DIR/meslo-nerd-font
+  return 0
+fi
+
+# Create font directory
+sudo -u $SUDO_USER mkdir -p "$FONT_DIR"
+
+# Download and extract font
+echo "----- Downloading MesloLGS Nerd Font..."
+TEMP_ZIP=$(mktemp)
+wget -qO "$TEMP_ZIP" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip"
+
+echo "----- Extracting fonts..."
+sudo -u $SUDO_USER unzip -o "$TEMP_ZIP" -d "$FONT_DIR" > /dev/null
+rm "$TEMP_ZIP"
+
+# Remove non-font files
+rm -f "$FONT_DIR/LICENSE.txt" "$FONT_DIR/README.md" 2>/dev/null || true
+
+# Rebuild font cache on Linux
+case $1 in
+  ubuntu | debian | pop | mint | elementary | arch | manjaro)
+    # Ensure fontconfig is installed
+    if ! command -v fc-cache &> /dev/null; then
+      case $1 in
+        ubuntu | debian | pop | mint | elementary)
+          apt install -y fontconfig
+          ;;
+        arch | manjaro)
+          pacman -Syu --noconfirm fontconfig
+          ;;
+      esac
+    fi
+    sudo -u $SUDO_USER fc-cache -f "$FONT_DIR"
+    ;;
+esac
+
+echo "----- MesloLGS Nerd Font installation complete"
+touch $MARKER_DIR/meslo-nerd-font

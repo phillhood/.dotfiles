@@ -48,7 +48,11 @@ bindkey '^n' history-search-forward
 
 ## Prompt
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/omp.yaml)"
+  if [ -n "$FBTERM" ]; then
+    eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/omp.fbterm.yaml)"
+  else
+    eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/omp.yaml)"
+  fi
 fi
 
 ## History
@@ -150,3 +154,6 @@ export NVM_DIR="$HOME/.nvm"
 
 autoload -Uz compinit
 compinit
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
