@@ -48,6 +48,8 @@ bindkey '^n' history-search-forward
 
 ## Prompt
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  # Prevent OSC 11 background color query from leaking in tmux
+  export POSH_TERMINAL_BACKGROUND=dark
   if [ -n "$FBTERM" ]; then
     eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/omp.fbterm.yaml)"
   else

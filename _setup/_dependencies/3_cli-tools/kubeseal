@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing kubeseal..."
+
+if command -v kubeseal &> /dev/null; then
+  echo "----- kubeseal is already installed"
+  touch $MARKER_DIR/kubeseal
+  return 0
+fi
+
+case $1 in
+  ubuntu | debian | pop | mint | elementary)
+    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/tags | jq -r '.[0].name' | cut -c 2-)
+    curl -sSL -o /tmp/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz
+    tar -xzf /tmp/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz -C /tmp
+    sudo install -m 755 /tmp/kubeseal /usr/local/bin/kubeseal
+    rm /tmp/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz /tmp/kubeseal
+    ;;
+  arch | manjaro)
+    yay -S --noconfirm kubeseal
+    ;;
+  darwin)
+    brew install kubeseal
+    ;;
+  *)
+    echo "bruh why are you using this distro - install kubeseal manually"
+    return 1
+    ;;
+esac
+
+echo "----- kubeseal installation complete"
+touch $MARKER_DIR/kubeseal

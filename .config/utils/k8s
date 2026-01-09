@@ -1,0 +1,15 @@
+# Kubernetes/Homelab utilities
+
+kdeploy() {
+  local name=$(basename "$PWD")
+  local output
+  output=$(helm template "$name" . -f ~/homelab/k8s/values.yaml)
+  echo "$output" | kubectl apply -f -
+
+  # Find namespace from rendered templates
+  local ns=$(echo "$output" | grep -m1 'namespace:' | awk '{print $2}')
+  ns=${ns:-default}
+
+  kubectl rollout restart deployment "$name" -n "$ns" 2>/dev/null ||
+    kubectl rollout restart deployment -l app="$name" -n "$ns" 2>/dev/null || true
+}

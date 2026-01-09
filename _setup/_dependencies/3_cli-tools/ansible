@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing ansible..."
+
+if command -v ansible &> /dev/null; then
+  echo "----- ansible is already installed"
+  touch $MARKER_DIR/ansible
+  return 0
+fi
+
+case $1 in
+  ubuntu | debian | pop | mint | elementary)
+    sudo apt install -y ansible
+    ;;
+  arch | manjaro)
+    sudo pacman -Syu --noconfirm ansible
+    ;;
+  darwin)
+    brew install ansible
+    ;;
+  *)
+    echo "bruh why are you using this distro - install ansible manually"
+    return 1
+    ;;
+esac
+
+echo "----- ansible installation complete"
+touch $MARKER_DIR/ansible

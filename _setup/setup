@@ -66,21 +66,25 @@ PATH=/usr/bin:$PATH && export PATH
 sudo chsh -s $(which zsh) $SUDO_USER >> $SETUP_LOG 2>&1
 echo "  - Changed default shell to zsh for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
 
-# install dependencies
+# install dependencies (in numbered phases)
 echo -e "\nInstalling dependencies..."
-for file in $SETUP_DIR/_dependencies/*; do
-  if [ -r "$file" ]; then
-    dep_name=$(basename "$file")
-    echo -n "  - $dep_name..."
-    
-    zsh $file $DISTRO >> $SETUP_LOG 2>&1
-    
-    if [ -f "$MARKER_DIR/$dep_name" ]; then
-      echo " ✓"
-    else
-      echo " ✗"
+for phase_dir in $(ls -d $SETUP_DIR/_dependencies/*/ 2>/dev/null | sort -V); do
+  phase=$(basename "$phase_dir")
+  echo -e "\n  Phase $phase:"
+  for file in "$phase_dir"/*; do
+    if [ -r "$file" ]; then
+      dep_name=$(basename "$file")
+      echo -n "    - $dep_name..."
+
+      zsh $file $DISTRO >> $SETUP_LOG 2>&1
+
+      if [ -f "$MARKER_DIR/$dep_name" ]; then
+        echo " ✓"
+      else
+        echo " ✗"
+      fi
     fi
-  fi
+  done
 done
 
 # Bars

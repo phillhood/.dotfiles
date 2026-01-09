@@ -1,0 +1,21 @@
+{
+  "name": "MaterialMonokai",
+  "foreground": "#F8F8F2",
+  "background": "#192227",
+  "black": "#5F7A87",
+  "red": "#FF2C96",
+  "green": "#9DFF00",
+  "yellow": "#E6DB74",
+  "blue": "#2EDCFF",
+  "purple": "#B78AFF",
+  "cyan": "#2EDCFF",
+  "white": "#F8F8F2",
+  "brightBlack": "#8ca0ad",
+  "brightRed": "#ff6b9f",
+  "brightGreen": "#b5ff4d",
+  "brightYellow": "#f0e68c",
+  "brightBlue": "#82aaff",
+  "brightPurple": "#c9a8ff",
+  "brightCyan": "#6ee7ff",
+  "brightWhite": "#ffffff"
+}

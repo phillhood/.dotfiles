@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing argocd CLI..."
+
+if command -v argocd &> /dev/null; then
+  echo "----- argocd is already installed"
+  touch $MARKER_DIR/argocd
+  return 0
+fi
+
+case $1 in
+  ubuntu | debian | pop | mint | elementary)
+    curl -sSL -o /tmp/argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+    sudo install -m 555 /tmp/argocd-linux-amd64 /usr/local/bin/argocd
+    rm /tmp/argocd-linux-amd64
+    ;;
+  arch | manjaro)
+    sudo pacman -Syu --noconfirm argocd
+    ;;
+  darwin)
+    brew install argocd
+    ;;
+  *)
+    echo "bruh why are you using this distro - install argocd manually"
+    return 1
+    ;;
+esac
+
+echo "----- argocd installation complete"
+touch $MARKER_DIR/argocd

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing tpm (tmux plugin manager)..."
+
+TPM_DIR="$USER_HOME/.config/tmux/plugins/tpm"
+
+if [ -d "$TPM_DIR" ]; then
+  echo "----- tpm is already installed"
+  touch $MARKER_DIR/tpm
+  return 0
+fi
+
+mkdir -p "$USER_HOME/.config/tmux/plugins"
+sudo -u $SUDO_USER git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+
+echo "----- tpm installation complete"
+echo "----- Run 'tmux' then press prefix + I to install plugins"
+touch $MARKER_DIR/tpm

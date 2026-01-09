@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing rustup..."
+
+if command -v rustup &> /dev/null; then
+  echo "----- rustup is already installed"
+  touch $MARKER_DIR/rustup
+  return 0
+fi
+
+sudo -u $SUDO_USER bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+
+# Install stable toolchain
+echo "----- Installing stable Rust toolchain..."
+sudo -u $SUDO_USER bash -c "source $USER_HOME/.cargo/env && rustup default stable"
+
+echo "----- rustup installation complete"
+touch $MARKER_DIR/rustup

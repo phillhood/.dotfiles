@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing direnv..."
+
+if command -v direnv &> /dev/null; then
+  echo "----- direnv is already installed"
+  touch $MARKER_DIR/direnv
+  return 0
+fi
+
+case $1 in
+  ubuntu | debian | pop | mint | elementary)
+    sudo apt install -y direnv
+    ;;
+  arch | manjaro)
+    sudo pacman -Syu --noconfirm direnv
+    ;;
+  darwin)
+    brew install direnv
+    ;;
+  *)
+    echo "bruh why are you using this distro - install direnv manually"
+    return 1
+    ;;
+esac
+
+echo "----- direnv installation complete"
+touch $MARKER_DIR/direnv

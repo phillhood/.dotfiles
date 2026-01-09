@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e
+
+echo "\n----- Installing nvim LSP servers..."
+
+# Source nvm if available
+export NVM_DIR="$USER_HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Check prerequisites
+if ! command -v npm &> /dev/null; then
+  echo "----- npm not found, installing node via nvm first..."
+  nvm install --lts
+fi
+
+if ! command -v go &> /dev/null; then
+  echo "----- go not found, skipping gopls"
+  GO_AVAILABLE=false
+else
+  GO_AVAILABLE=true
+fi
+
+if ! command -v rustup &> /dev/null; then
+  # Try sourcing cargo env
+  [ -f "$USER_HOME/.cargo/env" ] && source "$USER_HOME/.cargo/env"
+fi
+
+if ! command -v rustup &> /dev/null; then
+  echo "----- rustup not found, skipping rust-analyzer"
+  RUST_AVAILABLE=false
+else
+  RUST_AVAILABLE=true
+fi
+
+# Install npm-based LSP servers
+echo "----- Installing npm LSP servers..."
+sudo -u $SUDO_USER bash -c "source $NVM_DIR/nvm.sh && npm install -g \
+  typescript \
+  typescript-language-server \
+  pyright \
+  vscode-langservers-extracted"
+
+# Install gopls
+if [ "$GO_AVAILABLE" = true ]; then
+  echo "----- Installing gopls..."
+  sudo -u $SUDO_USER bash -c "export PATH=\$PATH:/usr/local/go/bin && \
+    export GOPATH=$USER_HOME/go && \
+    go install golang.org/x/tools/gopls@latest"
+fi
+
+# Install rust-analyzer
+if [ "$RUST_AVAILABLE" = true ]; then
+  echo "----- Installing rust-analyzer..."
+  sudo -u $SUDO_USER bash -c "source $USER_HOME/.cargo/env && rustup component add rust-analyzer"
+fi
+
+echo "----- nvim LSP servers installation complete"
+touch $MARKER_DIR/nvim-lsp
