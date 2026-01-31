@@ -1,10 +1,11 @@
 ## Homebrew apps path
-if [[ -f "/opt/homebrew/bin/brew" ]] then
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 ## Path updates
 export PATH="/usr/bin:$HOME/.local/bin:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 ## Zinit 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -35,6 +36,14 @@ zinit snippet $HOME/.config/zsh-plugins/conda.plugin.zsh
 # Load completions
 autoload -U compinit && compinit
 
+# Lazy load kubectl completion to speed up shell startup
+kubectl() {
+  if ! type __start_kubectl >/dev/null 2>&1; then
+    source <(command kubectl completion zsh)
+  fi
+  command kubectl "$@"
+}
+
 # zinit cdreplay -q
 
 # Keybindings 
@@ -59,7 +68,7 @@ fi
 
 ## History
 HISTSIZE=5000
-HISTILFE=~/.zsh_history
+HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
 HISTDUP=erase
 setopt appendhistory
@@ -85,6 +94,7 @@ alias ~='cd ~'
 alias ..='cd ..'
 alias vim=nvim
 alias loadenv="setopt allexport ; . ./.env ; unsetopt allexport"
+alias loadenv-staging="setopt allexport ; . ./.env.staging ; unsetopt allexport"
 
 # Load personal shell utils 
 for file in $HOME/.config/utils/*; do
@@ -137,25 +147,47 @@ case $os in
 esac
 
 # Shell integrations
-eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+[[ -o interactive ]] && eval "$(fzf --zsh)"
+[[ -o interactive ]] && eval "$(zoxide init --cmd cd zsh)"
+
+# Undefine zoxide cd function in non-interactive shells to avoid issues with scripts that use cd
+if [[ ! -o interactive ]] && (( ${+functions[cd]} )); then
+  unfunction cd
+fi
 
 # Conda init lazy loader
 source "$HOME/.config/conda/conda_init.$os.zsh"
 # Go
-export GOPATH=$HOME/go
-export GOROOT=/usr/local/go
-export PATH=$PATH:/usr/local/go/bin
+# export GOPATH=$HOME/go
+# export GOROOT=/usr/local/go
+# export PATH=$PATH:/usr/local/go/bin
 # SOPS age
 export SOPS_AGE_KEY_FILE=$HOME/.age/dev.txt
 
-# nvm
+# nvm lazy loader - only load when nvm/node/npm/npx is first used
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+_nvm_load() {
+  unset -f nvm node npm npx _nvm_load
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+nvm() { _nvm_load && nvm "$@"; }
+node() { _nvm_load && node "$@"; }
+npm() { _nvm_load && npm "$@"; }
+npx() { _nvm_load && npx "$@"; }
 
 autoload -Uz compinit
 compinit
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+# export PATH="/opt/homebrew/bin:$PATH"
+# export GOPATH=$HOME/go
+# export PATH=$GOPATH/bin:$PATH
+alias dos3='aws s3 --profile do'
+alias kctrldev='kubectx do-nyc3-core-development && kubens ctrl-core-dev'
+alias kctrlprod='kubectx do-nyc3-core-production && kubens ctrl-core'
+
+alias k='kubectl'
+alias kctx='kubectx'
+alias kns='kubens'
