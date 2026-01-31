@@ -31,7 +31,6 @@ zinit snippet OMZP::doctl
 zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
-zinit snippet $HOME/.config/zsh-plugins/conda.plugin.zsh
 
 # Load completions
 autoload -U compinit && compinit
@@ -95,6 +94,7 @@ alias ..='cd ..'
 alias vim=nvim
 alias loadenv="setopt allexport ; . ./.env ; unsetopt allexport"
 alias loadenv-staging="setopt allexport ; . ./.env.staging ; unsetopt allexport"
+function pip { uv pip "$1" --system "${@:2}"; }
 
 # Load personal shell utils 
 for file in $HOME/.config/utils/*; do
@@ -155,8 +155,8 @@ if [[ ! -o interactive ]] && (( ${+functions[cd]} )); then
   unfunction cd
 fi
 
-# Conda init lazy loader
-source "$HOME/.config/conda/conda_init.$os.zsh"
+# uv (python)
+eval "$(uv generate-shell-completion zsh)"
 # Go
 # export GOPATH=$HOME/go
 # export GOROOT=/usr/local/go
