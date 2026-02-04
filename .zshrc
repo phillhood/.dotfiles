@@ -94,7 +94,8 @@ alias ..='cd ..'
 alias vim=nvim
 alias loadenv="setopt allexport ; . ./.env ; unsetopt allexport"
 alias loadenv-staging="setopt allexport ; . ./.env.staging ; unsetopt allexport"
-function pip { uv pip "$1" --system "${@:2}"; }
+alias py='uv run python'
+alias pyr='uv run'
 
 # Load personal shell utils 
 for file in $HOME/.config/utils/*; do
