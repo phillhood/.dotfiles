@@ -157,6 +157,8 @@ if [[ ! -o interactive ]] && (( ${+functions[cd]} )); then
 fi
 
 # uv (python)
+alias py="uv run python"
+alias pip="uv pip"
 eval "$(uv generate-shell-completion zsh)"
 # Go
 # export GOPATH=$HOME/go
@@ -192,3 +194,10 @@ alias kctrlprod='kubectx do-nyc3-core-production && kubens ctrl-core'
 alias k='kubectl'
 alias kctx='kubectx'
 alias kns='kubens'
+
+# bun completions
+[ -s "/home/shy/.bun/_bun" ] && source "/home/shy/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

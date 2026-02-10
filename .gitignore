@@ -2,3 +2,4 @@
 !.config/nvim/lua/plugins/**
 **/markers/
 **/logs/
+.config/uv
