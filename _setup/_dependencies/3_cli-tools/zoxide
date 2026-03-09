@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -7,7 +7,7 @@ echo "\n----- Installing zoxide..."
 if command -v zoxide &> /dev/null; then
   echo "----- zoxide is already installed"
   touch $MARKER_DIR/zoxide
-  return 0
+  exit 0
 fi
 
 sudo -u $SUDO_USER bash -c "mkdir -p $USER_HOME/.local/bin && \

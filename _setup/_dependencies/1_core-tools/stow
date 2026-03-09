@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -7,22 +7,22 @@ echo "\n----- Installing stow..."
 if command -v stow &> /dev/null; then
   echo "----- stow is already installed"
   touch $MARKER_DIR/stow
-  return 0
+  exit 0
 fi
 
 case $1 in
   ubuntu|debian|pop|mint|elementary)
     sudo apt install -y stow
     ;;
-  arch|manjaro)
-    sudo pacman -Syu --noconfirm stow
+  arch|manjaro|endeavouros)
+    sudo pacman -S --noconfirm stow
     ;;
   darwin)
     brew install stow
     ;; 
   *)
     echo "bruh why are you using this distro - install stow manually"
-    return 1
+    exit 1
     ;;
 esac
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -7,7 +7,7 @@ echo "\n----- Installing docker..."
 if command -v docker &> /dev/null; then
   echo "----- docker is already installed" 
   touch $MARKER_DIR/docker
-  return 0
+  exit 0
 fi
 
 case $1 in
@@ -17,8 +17,8 @@ case $1 in
     sh get-docker.sh 
     rm get-docker.sh
     ;;
-  arch | manjaro)
-    sudo pacman -Syu --noconfirm docker 
+  arch | manjaro | endeavouros)
+    sudo pacman -S --noconfirm docker 
     sudo systemctl start docker
     sudo systemctl enable docker
     ;;
@@ -30,9 +30,11 @@ case $1 in
     ;;
   *)
     echo "bruh why are you using this distro - install fastfetch manually"
-    return 1
+    exit 1
     ;;
 esac
+
+sudo usermod -aG docker $USER
 
 echo "----- docker installation complete"
 

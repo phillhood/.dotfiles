@@ -49,8 +49,8 @@ else
   ubuntu|debian|pop|mint|elementary)
     sudo apt update > $SETUP_LOG 2>&1 && apt install -y zsh curl wget unzip which > $SETUP_LOG 2>&1
     ;;
-  arch|manjaro)
-    sudo pacman -Syu --noconfirm zsh curl wget unzip which > $SETUP_LOG 2>&1
+  arch|manjaro|endeavouros)
+    sudo pacman -S --noconfirm zsh curl wget unzip which > $SETUP_LOG 2>&1
     ;;
   darwin)
     brew update > $SETUP_LOG 2>&1 && brew install zsh curl wget unzip which > $SETUP_LOG 2>&1
@@ -63,8 +63,12 @@ else
   echo "----- Successfully installed zsh" | tee -a $SETUP_LOG 2>&1
 fi
 PATH=/usr/bin:$PATH && export PATH
-sudo chsh -s $(which zsh) $SUDO_USER >> $SETUP_LOG 2>&1
-echo "  - Changed default shell to zsh for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
+if [ "$(getent passwd $SUDO_USER | cut -d: -f7)" != "$(which zsh)" ]; then
+  sudo chsh -s $(which zsh) $SUDO_USER >> $SETUP_LOG 2>&1
+  echo "  - Changed default shell to zsh for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
+else
+  echo "  - zsh is already the default shell for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
+fi
 
 # install dependencies (in numbered phases)
 echo -e "\nInstalling dependencies..."

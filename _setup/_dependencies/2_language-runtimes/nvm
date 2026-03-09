@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
 echo "\n----- Installing nvm..."
 
-if command -v nvm &> /dev/null; then
+if [ -d "$USER_HOME/.nvm" ]; then
   echo "----- nvm is already installed"
   touch $MARKER_DIR/nvm
-  return 0
+  exit 0
 fi
 
 sudo -u $SUDO_USER bash -c "export NVM_DIR=\"$USER_HOME/.nvm\" && \

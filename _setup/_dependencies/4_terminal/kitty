@@ -1,0 +1,53 @@
+#!/bin/zsh
+
+set -e
+
+echo "\n----- Installing kitty..."
+
+# kitty only makes sense on graphical Linux desktops
+case $1 in
+  darwin)
+    echo "----- kitty is not needed on macOS (use iTerm2 or Terminal.app)"
+    touch $MARKER_DIR/kitty
+    exit 0
+    ;;
+esac
+
+# Skip on headless systems (no display server)
+if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
+  # Also check if systemd default target is graphical
+  if command -v systemctl &> /dev/null; then
+    default_target=$(systemctl get-default 2>/dev/null || echo "")
+    if [ "$default_target" != "graphical.target" ]; then
+      echo "----- No graphical environment detected, skipping kitty"
+      touch $MARKER_DIR/kitty
+      exit 0
+    fi
+  else
+    echo "----- No graphical environment detected, skipping kitty"
+    touch $MARKER_DIR/kitty
+    exit 0
+  fi
+fi
+
+if command -v kitty &> /dev/null; then
+  echo "----- kitty is already installed"
+  touch $MARKER_DIR/kitty
+  exit 0
+fi
+
+case $1 in
+  ubuntu|debian|pop|mint|elementary)
+    apt install -y kitty
+    ;;
+  arch|manjaro|endeavouros)
+    pacman -S --noconfirm kitty
+    ;;
+  *)
+    echo "bruh why are you using this distro - install kitty manually"
+    exit 1
+    ;;
+esac
+
+echo "----- kitty installation complete"
+touch $MARKER_DIR/kitty

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -7,22 +7,22 @@ echo "\n----- Installing kubectx and kubens..."
 if command -v kubectx &> /dev/null && command -v kubens &> /dev/null; then
   echo "----- kubectx and kubens are already installed"
   touch $MARKER_DIR/kubectx
-  return 0
+  exit 0
 fi
 
 case $1 in
   ubuntu | debian | pop | mint | elementary)
     sudo apt install -y kubectx
     ;;
-  arch | manjaro)
-    sudo pacman -Syu --noconfirm kubectx
+  arch | manjaro | endeavouros)
+    sudo pacman -S --noconfirm kubectx
     ;;
   darwin)
     brew install kubectx
     ;;
   *)
     echo "bruh why are you using this distro - install kubectx manually"
-    return 1
+    exit 1
     ;;
 esac
 

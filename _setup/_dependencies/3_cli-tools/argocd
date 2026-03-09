@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -7,7 +7,7 @@ echo "\n----- Installing argocd CLI..."
 if command -v argocd &> /dev/null; then
   echo "----- argocd is already installed"
   touch $MARKER_DIR/argocd
-  return 0
+  exit 0
 fi
 
 case $1 in
@@ -16,15 +16,15 @@ case $1 in
     sudo install -m 555 /tmp/argocd-linux-amd64 /usr/local/bin/argocd
     rm /tmp/argocd-linux-amd64
     ;;
-  arch | manjaro)
-    sudo pacman -Syu --noconfirm argocd
+  arch | manjaro | endeavouros)
+    sudo pacman -S --noconfirm argocd
     ;;
   darwin)
     brew install argocd
     ;;
   *)
     echo "bruh why are you using this distro - install argocd manually"
-    return 1
+    exit 1
     ;;
 esac
 

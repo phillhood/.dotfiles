@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -7,10 +7,10 @@ echo "\n----- Installing uv..."
 if command -v uv &> /dev/null; then
   echo "----- uv is already installed"
   touch $MARKER_DIR/uv
-  return 0
+  exit 0
 fi
 
-curl -LsSf https://astral.sh/uv/install.sh | sh
+sudo -u $SUDO_USER bash -c "curl -LsSf https://astral.sh/uv/install.sh | sh"
 
 echo "----- uv installation complete"
 touch $MARKER_DIR/uv

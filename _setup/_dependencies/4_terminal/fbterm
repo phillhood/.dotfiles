@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 
@@ -9,7 +9,7 @@ case $1 in
   darwin)
     echo "----- fbterm is not needed on macOS (use iTerm2 or Terminal.app)"
     touch $MARKER_DIR/fbterm
-    return 0
+    exit 0
     ;;
 esac
 
@@ -17,7 +17,7 @@ esac
 if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
   echo "----- Graphical environment detected, skipping fbterm"
   touch $MARKER_DIR/fbterm
-  return 0
+  exit 0
 fi
 
 # Check if systemd default target is graphical
@@ -26,26 +26,26 @@ if command -v systemctl &> /dev/null; then
   if [ "$default_target" = "graphical.target" ]; then
     echo "----- System configured for graphical boot, skipping fbterm"
     touch $MARKER_DIR/fbterm
-    return 0
+    exit 0
   fi
 fi
 
 if command -v fbterm &> /dev/null; then
   echo "----- fbterm is already installed"
   touch $MARKER_DIR/fbterm
-  return 0
+  exit 0
 fi
 
 case $1 in
   ubuntu | debian | pop | mint | elementary)
     apt install -y fbterm fontconfig
     ;;
-  arch | manjaro)
-    pacman -Syu --noconfirm fbterm fontconfig
+  arch | manjaro | endeavouros)
+    pacman -S --noconfirm fbterm fontconfig
     ;;
   *)
     echo "bruh why are you using this distro - install fbterm manually"
-    return 1
+    exit 1
     ;;
 esac
 
