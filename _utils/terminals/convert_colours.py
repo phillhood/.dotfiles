@@ -92,11 +92,49 @@ def convert_to_fbterm(colours_json):
     return "\n".join(lines)
 
 
+def convert_to_kitty(colours_json):
+    """Convert standard colour JSON to kitty theme format"""
+    lines = []
+    name = colours_json.get("name", "theme")
+    lines.append(f"# {name} color theme for kitty")
+    lines.append("")
+
+    if "foreground" in colours_json:
+        lines.append(f"foreground {colours_json['foreground']}")
+    if "background" in colours_json:
+        lines.append(f"background {colours_json['background']}")
+    lines.append("")
+
+    if "cursorColor" in colours_json:
+        lines.append(f"cursor {colours_json['cursorColor']}")
+    if "selectionBackground" in colours_json:
+        lines.append(f"selection_foreground none")
+        lines.append(f"selection_background {colours_json['selectionBackground']}")
+    lines.append("")
+
+    lines.append("# normal colors")
+    for colour_name, index in ANSI_MAP.items():
+        if index > 7:
+            break
+        if colour_name in colours_json:
+            lines.append(f"color{index} {colours_json[colour_name]}")
+
+    lines.append("")
+    lines.append("# bright colors")
+    for colour_name, index in ANSI_MAP.items():
+        if index < 8:
+            continue
+        if colour_name in colours_json:
+            lines.append(f"color{index:<2d} {colours_json[colour_name]}")
+
+    return "\n".join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Convert terminal colour profiles between formats")
     parser.add_argument("input", help="Path to input colour profile (iTerm2 JSON or standard JSON)")
     parser.add_argument("name", nargs="?", default=None, help="Profile name (required for iTerm2 input)")
-    parser.add_argument("-f", "--format", choices=["winterm", "fbterm"], default="winterm",
+    parser.add_argument("-f", "--format", choices=["winterm", "fbterm", "kitty"], default="winterm",
                         help="Output format: winterm (default) or fbterm")
     parser.add_argument("--from", dest="input_format", choices=["iterm", "standard"], default="iterm",
                         help="Input format: iterm (default) or standard JSON")
@@ -122,6 +160,8 @@ def main():
 
         if args.format == "fbterm":
             print(convert_to_fbterm(colours))
+        elif args.format == "kitty":
+            print(convert_to_kitty(colours))
         else:
             print(json.dumps(colours, indent=2))
 
