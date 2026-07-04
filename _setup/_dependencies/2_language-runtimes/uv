@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+set -e
+
+echo "\n----- Installing uv..."
+
+if command -v uv &> /dev/null; then
+  echo "----- uv is already installed"
+  touch $MARKER_DIR/uv
+  exit 0
+fi
+
+sudo -u $SUDO_USER bash -c "curl -LsSf https://astral.sh/uv/install.sh | sh"
+
+echo "----- uv installation complete"
+touch $MARKER_DIR/uv

@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+set -e
+
+echo "\n----- installing fastfetch..."
+
+if command -v fastfetch &> /dev/null; then
+  echo "----- fastfetch is already installed"
+  touch $MARKER_DIR/fastfetch
+  exit 0
+fi
+
+case $1 in
+  ubuntu | debian | pop | mint | elementary)
+    apt install -y fastfetch
+    ;;
+  arch | manjaro | endeavouros)
+    pacman -S --noconfirm fastfetch
+    ;;
+  darwin)
+    brew install fastfetch
+    ;;
+  *)
+    echo "bruh why are you using this distro - install fastfetch manually"
+    exit 1
+    ;;
+esac
+
+echo "----- fastfetch installation complete"
+ 

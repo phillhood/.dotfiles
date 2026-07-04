@@ -1,0 +1,100 @@
+#!/bin/bash
+
+set -e
+
+# checks
+if [ -z "$SUDO_USER" ]; then
+  echo "Please run this script with sudo." | tee -a $SETUP_LOG 2>&1
+  exit 1
+fi
+
+# Directories and setup vars
+USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6) && export USER_HOME
+SETUP_DIR=$USER_HOME/.dotfiles/_setup && export SETUP_DIR
+mkdir -p $SETUP_DIR/logs && touch $SETUP_DIR/logs/setup.log
+SETUP_LOG=$SETUP_DIR/logs/setup.log && export SETUP_LOG
+MARKER_DIR=$USER_HOME/.dotfiles/_setup/markers && export MARKER_DIR
+mkdir -p $MARKER_DIR
+chown -R $SUDO_USER:$(id -gn $SUDO_USER) $SETUP_DIR
+
+echo -e "\nInitializing fresh system install..." | tee -a $SETUP_LOG 2>&1
+
+# Get distro for certain dependencies
+detect_distro() {
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    distro=$ID
+  elif type lsb_release >/dev/null 2>&1; then
+    distro=$(lsb_release -si | tr '[:upper:]' '[:lower:]')
+  elif [ -f /etc/lsb-release ]; then
+    . /etc/lsb-release
+    distro=$DISTRIB_ID
+  elif [ -f /etc/debian_version ]; then
+    distro="debian"
+  else
+    distro=$(uname -s)
+  fi
+  echo $distro
+}
+DISTRO=$(detect_distro) && export DISTRO
+
+# Install zsh and basic dependencies first
+echo -e "\nInstalling zsh..."
+
+# check if zsh is already installed, else install it
+if command -v zsh &> /dev/null; then
+  echo "  - zsh is already installed" | tee -a $SETUP_LOG 2>&1
+else
+  case $DISTRO in
+  ubuntu|debian|pop|mint|elementary)
+    sudo apt update > $SETUP_LOG 2>&1 && apt install -y zsh curl wget unzip which > $SETUP_LOG 2>&1
+    ;;
+  arch|manjaro|endeavouros)
+    sudo pacman -S --noconfirm zsh curl wget unzip which > $SETUP_LOG 2>&1
+    ;;
+  darwin)
+    brew update > $SETUP_LOG 2>&1 && brew install zsh curl wget unzip which > $SETUP_LOG 2>&1
+    ;;
+  *)
+    echo "bruh why are you using this distro - install zsh,curl,wget,unzip manually" | tee -a $SETUP_LOG 2>&1
+    return 1
+    ;;
+  esac
+  echo "----- Successfully installed zsh" | tee -a $SETUP_LOG 2>&1
+fi
+PATH=/usr/bin:$PATH && export PATH
+if [ "$(getent passwd $SUDO_USER | cut -d: -f7)" != "$(which zsh)" ]; then
+  sudo chsh -s $(which zsh) $SUDO_USER >> $SETUP_LOG 2>&1
+  echo "  - Changed default shell to zsh for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
+else
+  echo "  - zsh is already the default shell for $SUDO_USER" | tee -a $SETUP_LOG 2>&1
+fi
+
+# install dependencies (in numbered phases)
+echo -e "\nInstalling dependencies..."
+for phase_dir in $(ls -d $SETUP_DIR/_dependencies/*/ 2>/dev/null | sort -V); do
+  phase=$(basename "$phase_dir")
+  echo -e "\n  Phase $phase:"
+  for file in "$phase_dir"/*; do
+    if [ -r "$file" ]; then
+      dep_name=$(basename "$file")
+      echo -n "    - $dep_name..."
+
+      zsh $file $DISTRO >> $SETUP_LOG 2>&1
+
+      if [ -f "$MARKER_DIR/$dep_name" ]; then
+        echo " ✓"
+      else
+        echo " ✗"
+      fi
+    fi
+  done
+done
+
+# Bars
+zsh $SETUP_DIR/_kek/butHesNotaRapper
+
+# Remove default zshrc, stow shell configs and switch to user shell
+[ -f "$USER_HOME/.zshrc" ] && sudo rm $USER_HOME/.zshrc
+cd $USER_HOME/.dotfiles && stow .
+su - $SUDO_USER

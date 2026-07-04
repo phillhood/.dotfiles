@@ -1,0 +1,29 @@
+# Global git ignore (referenced by ~/.gitconfig core.excludesfile)
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*.swp
+*.swo
+*~
+.idea/
+.vscode/*
+!.vscode/settings.json
+
+# Direnv
+.envrc.local
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/

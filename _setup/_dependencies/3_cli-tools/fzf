@@ -1,0 +1,38 @@
+#!/bin/zsh
+
+set -e
+
+echo "\n----- Installing fzf..."
+
+if command -v fzf &> /dev/null; then
+  echo "----- fzf is already installed"
+  touch $MARKER_DIR/fzf
+  exit 0
+fi
+
+case $1 in
+  ubuntu | debian | pop | mint | elementary)
+    sudo apt install -y fzf
+    ;;
+  arch | manjaro | endeavouros)
+    sudo pacman -S --noconfirm fzf
+    ;;
+  darwin)
+    brew install fzf
+    ;;
+  *)
+    echo "bruh why are you using this distro - install fastfetch manually"
+    exit 1
+    ;;
+esac
+
+# # install from source
+# if [ -d "/opt/fzf" ]; then
+#   echo "fzf repo already exists, skipping clone"
+# else
+#   git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf
+# fi
+# /opt/fzf/install --all
+
+echo "----- fzf installation complete"
+touch $MARKER_DIR/fzf

@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(hyprctl clients*)",
+      "Bash(hyprctl monitors*)",
+      "Bash(hyprctl getoption*)",
+      "Bash(hyprctl configerrors*)",
+      "Bash(hyprctl activewindow*)",
+      "Bash(hyprctl workspaces*)",
+      "Bash(hyprctl binds*)",
+      "Bash(hyprctl version*)",
+      "Bash(hyprctl activeworkspace*)",
+      "Bash(hyprctl windowrules*)",
+      "Bash(pacman -Q*)",
+      "Bash(pacman -Ss *)",
+      "Bash(pacman -Si *)",
+      "Bash(chezmoi managed*)",
+      "Bash(chezmoi status*)",
+      "Bash(chezmoi source-path*)",
+      "Bash(chezmoi diff*)",
+      "Bash(chezmoi doctor*)",
+      "Bash(journalctl*)",
+      "Bash(lsblk*)",
+      "Bash(lspci*)",
+      "Bash(flatpak list*)",
+      "Bash(findmnt*)",
+      "Bash(wpctl get-volume*)",
+      "Bash(systemctl status*)",
+      "Bash(systemctl is-active*)"
+    ]
+  }
+}

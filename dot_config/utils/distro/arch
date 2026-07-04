@@ -1,0 +1,8 @@
+#!bin/zsh
+
+## SSH agent (systemd socket-activated)
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+## Aliases
+alias pacman='sudo pacman'
+

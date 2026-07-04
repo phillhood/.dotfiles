@@ -1,0 +1,14 @@
+# chezmoi source repo ignores
+_setup/markers/
+_setup/logs/
+**/logs/
+**/markers/
+
+# local chezmoi state
+.chezmoistate.boltdb
+
+# Claude Code local (per-user) settings
+.claude/settings.local.json
+
+# superpowers SDD scratch
+.superpowers/
