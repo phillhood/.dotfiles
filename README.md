@@ -40,10 +40,9 @@ Repo-only (see `.chezmoiignore`, not deployed to `$HOME`): `_setup/` (bootstrap 
 ## Usage
 
 ```sh
-# On a new machine
-chezmoi init --branch chezmoi git@github.com:phillhood/.dotfiles.git
-chezmoi diff          # preview
-chezmoi apply         # apply
+# On a new machine (bare Arch) — installs deps + applies dotfiles
+git clone --branch chezmoi https://github.com/phillhood/.dotfiles.git /tmp/dotfiles
+/tmp/dotfiles/_setup/bootstrap   # run as your normal user, NOT root
 
 # Day to day
 chezmoi edit ~/.zshrc # edit source, then:

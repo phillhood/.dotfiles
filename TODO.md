@@ -50,5 +50,6 @@ Remaining:
 - [ ] k9s/helm configs are already in place; zshrc aliases (k/kctx/kns) + utils/k8s ready.
 
 ## Bootstrap scripts (`_setup/`)
-- [ ] `_setup/setup` is the old distro bootstrap (still stow/nvm/oh-my-posh oriented).
-- [ ] Update for Arch + chezmoi + starship/fnm before relying on it for a fresh machine.
+- [x] Rewritten for Arch + chezmoi (SP1): `_setup/bootstrap` installs git+chezmoi then
+      `chezmoi init --apply`; packages live in `.chezmoidata/packages.yaml` and install via
+      `.chezmoiscripts/` (yay). Old stow/nvm/oh-my-posh `_dependencies/` + `setup` removed.
