@@ -1,0 +1,3 @@
+{{- $installK8s := promptBoolOnce . "installK8s" "Install Kubernetes CLI tools?" false -}}
+[data]
+    installK8s = {{ $installK8s }}
