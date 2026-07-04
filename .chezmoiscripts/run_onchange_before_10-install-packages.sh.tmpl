@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# chezmoi template: the package list is inlined below, so this script's content
+# hash changes whenever packages.yaml changes — which makes chezmoi re-run it
+# (run_onchange) and install any newly-added packages.
+
+echo "==> Ensuring build prerequisites (base-devel, git)"
+sudo pacman -S --needed --noconfirm base-devel git
+
+if ! command -v yay >/dev/null 2>&1; then
+  echo "==> Installing yay (AUR helper)"
+  tmpdir="$(mktemp -d)"
+  git clone --depth 1 https://aur.archlinux.org/yay-bin.git "$tmpdir/yay-bin"
+  ( cd "$tmpdir/yay-bin" && makepkg -si --noconfirm )
+  rm -rf "$tmpdir"
+fi
+
+{{- $pkgs := concat .packages.core .packages.cli .packages.secrets .packages.docker }}
+{{- if .installK8s }}{{ $pkgs = concat $pkgs .packages.k8s }}{{ end }}
+packages=(
+{{- range $pkgs }}
+  {{ . }}
+{{- end }}
+)
+
+echo "==> Installing ${#packages[@]} packages via yay"
+yay -S --needed --noconfirm "${packages[@]}"
