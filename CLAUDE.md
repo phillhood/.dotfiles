@@ -5,9 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 Personal dotfiles for Arch Linux (Hyprland/Wayland), managed with [GNU Stow](https://www.gnu.org/software/stow/).
-This is the `stow` branch — a migration off the earlier chezmoi setup. The dotfiles repo does **only**
-symlink management; machine provisioning (package installs, post-install steps) lives in a separate
-`bootstrap` repo.
+Migrated from an earlier chezmoi setup. The dotfiles repo does **only** symlink management; machine
+provisioning (package installs, post-install steps) lives in a separate `bootstrap` repo.
 
 ## The model: stow packages
 

@@ -20,8 +20,6 @@ Open follow-ups for the stow-based dotfiles.
       + pin/relink node, or template the node path.
 - [ ] `known_marketplaces.json` tracks a `lastUpdated` timestamp that Claude bumps on every
       marketplace refresh → recurring noise diffs. Decide whether to keep tracking it.
-- [ ] Root `.claude/settings.json` (this repo's own project allowlist) still permits
-      `chezmoi managed/status/diff/...` — dead entries now that chezmoi is gone; prune when convenient.
 
 ## Bootstrap (separate repo) — built
 - [x] `phillhood/bootstrap` built at `~/Dev/phillhood/bootstrap` (local, branch `main`):

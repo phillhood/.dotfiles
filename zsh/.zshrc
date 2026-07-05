@@ -1,4 +1,4 @@
-# ~/.zshrc — managed by chezmoi
+# ~/.zshrc — managed by stow (~/.dotfiles)
 # Merged from old EndeavourOS dotfiles + Arch bootstrap (starship/atuin/fnm)
 
 # ---- PATH ----

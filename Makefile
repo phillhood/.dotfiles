@@ -24,5 +24,5 @@ unstow: ## Remove all symlinks
 restow: ## Re-link all packages (after adding/renaming files)
 	$(STOW) --restow $(PACKAGES)
 
-adopt: ## One-time takeover of existing real files (chezmoi handoff)
+adopt: ## One-time takeover of pre-existing real files as symlinks
 	$(STOW) --adopt $(PACKAGES)
