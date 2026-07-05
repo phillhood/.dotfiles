@@ -1,7 +1,4 @@
 # bat configuration
 # https://github.com/sharkdp/bat#configuration-file
 
-# default syntax-highlighting theme (dark)
-# alternatives: "Monokai Extended Bright", "Monokai Extended Origin"
-# list all with: bat --list-themes
 --theme="Monokai Extended"

@@ -1,5 +1,4 @@
 # ~/.zshrc — managed by stow (~/.dotfiles)
-# Merged from old EndeavourOS dotfiles + Arch bootstrap (starship/atuin/fnm)
 
 # ---- PATH ----
 export PATH="$HOME/.local/bin:$PATH"
@@ -25,7 +24,6 @@ zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::docker
 zinit snippet OMZP::command-not-found
-# Kubernetes (tools installed separately; snippets are harmless without them)
 zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 
@@ -55,9 +53,9 @@ bindkey '^n' history-search-forward
 eval "$(starship init zsh)"
 
 # ---- Tool integrations ----
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd cd)"
 eval "$(fzf --zsh)"
-eval "$(atuin init zsh)"
+eval "$(atuin init zsh --disable-up-arrow)"
 eval "$(direnv hook zsh)"
 
 # fnm (node)
