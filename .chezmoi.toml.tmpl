@@ -1,3 +1,6 @@
-{{- $installK8s := promptBoolOnce . "installK8s" "Install Kubernetes CLI tools?" false -}}
+{{- $installK8s := false -}}
+{{- if or (hasKey . "installK8s") stdinIsATTY -}}
+{{-   $installK8s = promptBoolOnce . "installK8s" "Install Kubernetes CLI tools?" false -}}
+{{- end -}}
 [data]
     installK8s = {{ $installK8s }}
