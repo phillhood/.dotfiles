@@ -1,5 +1,6 @@
-# Claude Code local (per-user) settings
-.claude/settings.local.json
+# Claude Code's own project config for THIS repo (not part of the dotfiles) — never track.
+# Anchored (leading /) so it hits ONLY the repo root, not the claude/.claude/ stow package.
+/.claude/
 
 # superpowers SDD scratch
 .superpowers/
