@@ -23,8 +23,10 @@ Open follow-ups for the stow-based dotfiles.
 - [ ] Root `.claude/settings.json` (this repo's own project allowlist) still permits
       `chezmoi managed/status/diff/...` — dead entries now that chezmoi is gone; prune when convenient.
 
-## Bootstrap (separate repo)
-- [ ] Build `phillhood/bootstrap`: install.sh, packages/{core,cli,docker,k8s}.txt,
-      post-install.sh, lib/ (distro detect), smoke-test.sh, easter egg. Source material is in
-      git history on the `chezmoi` branch (`.chezmoidata/packages.yaml`, `.chezmoiscripts/*`,
-      `_setup/*`). See docs/superpowers/specs/2026-07-05-stow-migration-design.md.
+## Bootstrap (separate repo) — built
+- [x] `phillhood/bootstrap` built at `~/Dev/phillhood/bootstrap` (local, branch `main`):
+      `install.sh` + `lib/` (distro dispatch) + `steps/` + `packages/{core,cli,docker,k8s}.txt` + `kek/`.
+- [ ] Push it to GitHub (`gh repo create phillhood/bootstrap --public`) to enable the `curl | bash` one-liner.
+- [ ] Coordination: bootstrap clones dotfiles at `DOTFILES_BRANCH` (default `main`); until the stow
+      layout is on `main`, fresh-machine runs need `DOTFILES_BRANCH=stow`. Resolve when pushing `stow`.
+- [ ] Port the deferred container smoke-test for end-to-end idempotency verification.
