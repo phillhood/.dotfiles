@@ -40,3 +40,11 @@ _utils
 .claude/plugins/installed_plugins.json
 .claude/plugins/plugin-catalog-cache.json
 .claude/plugins/.last_inuse_sweep
+
+# ---- ~/.ssh: defensive guards (this repo is PUBLIC) ----
+# Only ~/.ssh/config is tracked. Private keys must NEVER be committed —
+# a leaked private key in a public repo is an instant compromise.
+.ssh/id_*
+.ssh/*_key
+.ssh/*.pem
+.ssh/known_hosts*

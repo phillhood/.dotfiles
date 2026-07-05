@@ -1,0 +1,7 @@
+# SSH key selection for GitHub is handled per-directory by git via
+# core.sshCommand (see ~/.gitconfig and ~/.gitconfig-shy). Remotes use
+# plain git@github.com, so no host aliases are needed here.
+#
+# Manual test if you ever need it:
+#   ssh -i ~/.ssh/id_phill -o IdentitiesOnly=yes -T git@github.com   # -> Hi phillhood!
+#   ssh -i ~/.ssh/id_shy   -o IdentitiesOnly=yes -T git@github.com   # -> Hi shychedelic!

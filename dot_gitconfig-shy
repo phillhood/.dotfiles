@@ -1,0 +1,6 @@
+# Hobby identity (overrides default)
+[user]
+	email = shy@shychedelic.com
+	name = Shy
+[core]
+	sshCommand = ssh -i ~/.ssh/id_shy -o IdentitiesOnly=yes

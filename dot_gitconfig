@@ -1,6 +1,4 @@
-[user]
-	email = phill@phillhood.ca
-	name = Phill Hood
+# Default settings
 [init]
 	defaultBranch = main
 [pull]
@@ -11,3 +9,14 @@
 	conflictstyle = zdiff3
 [core]
 	excludesfile = ~/.gitignore_global
+	# Default SSH key (personal). Overridden per-directory below.
+	sshCommand = ssh -i ~/.ssh/id_phill -o IdentitiesOnly=yes
+
+# Personal identity (default — applies everywhere, incl. ~/Dev/phillhood)
+[user]
+	email = phill@phillhood.ca
+	name = Phill Hood
+
+# Hobby identity + key — overrides the default inside ~/Dev/shychedelic
+[includeIf "gitdir:~/Dev/shychedelic/"]
+	path = ~/.gitconfig-shy
