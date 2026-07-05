@@ -53,9 +53,9 @@ stow -n zsh      # dry-run
 - **`starship/`, `tmux/`, `bat/`, `htop/`, `k9s/`, `helm/`** — single-app config packages.
 - **`tools/`** — terminal colour-scheme conversion tooling (Material Monokai across
   kitty/iTerm2/fbterm/nvim/Windows Terminal). Repo-only, not stowed.
-- **`canonical/`** — reference copies of configs that are NOT stowed (e.g. `.claude/settings.json`,
+- **`tools/canonical/`** — reference copies of configs that are NOT stowed (e.g. `.claude/settings.json`,
   which a plugin rewrites live) but kept for `bootstrap` to apply on a fresh machine. Mirrors `$HOME`;
-  absent from `PACKAGES`, so `make install` ignores it. See `canonical/README.md`.
+  lives under the repo-only `tools/` dir, so `make install` never touches it. See `tools/canonical/README.md`.
 
 ## Provisioning
 

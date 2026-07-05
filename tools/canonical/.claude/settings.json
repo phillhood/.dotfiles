@@ -1,0 +1,51 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(.planning/*)",
+      "Write(.planning/*)",
+      "Read(STATE.md)",
+      "Write(STATE.md)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(.secrets)"
+    ],
+    "defaultMode": "default"
+  },
+  "model": "opus",
+  "effortLevel": "xhigh",
+  "advisorModel": "fable",
+  "theme": "dark",
+  // TODO: custom status line - https://code.claude.com/docs/en/statusline#manually-configure-a-status-line
+  "statusLine": {
+    "type": "command",
+    "command": "\"/home/phill/.local/share/fnm/node-versions/v24.17.0/installation/bin/node\" \"/home/phill/.claude/hooks/gsd-statusline.js\""
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/uv-python.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true
+  },
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": false
+}

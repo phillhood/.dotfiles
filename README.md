@@ -21,8 +21,8 @@ config immediately — the deployed files are symlinks back into this repo.
 | `k9s`      | `~/.config/k9s/*`                                         |
 | `helm`     | `~/.config/helm/repositories.yaml`                        |
 
-Repo-only (not stowed): `tools/` (terminal colour-scheme tooling), `canonical/` (reference configs
-a plugin rewrites live — e.g. `.claude/settings.json` — applied by `bootstrap`, not stow).
+Repo-only (not stowed): `tools/` — terminal colour-scheme tooling, plus `tools/canonical/` (reference
+configs a plugin rewrites live — e.g. `.claude/settings.json` — applied by `bootstrap`, not stow).
 
 ## Usage
 
