@@ -12,17 +12,17 @@ Open follow-ups for the stow-based dotfiles.
       fastfetch, btop. Add as stow packages. Watch for machine-specific monitor/env lines.
 
 ## Claude Code (~/.claude)
-- [ ] `settings.json` is tracked but non-portable: its GSD hooks + statusline hardcode a
-      specific fnm node path (`~/.local/share/fnm/node-versions/vX/.../node`) and reference
-      `gsd-*.js`/`gsd-*.sh` hook scripts that are NOT tracked in the `claude` package. On a
-      fresh machine (or after a node bump) every gsd hook + statusline breaks until that node
-      version and the hook scripts exist. Decide in the bootstrap repo: install the gsd hooks
-      + pin/relink node, or template the node path.
+- [x] `settings.json` untracked from the `claude` package (Claude/GSD rewrite it live) — canonical
+      copy now kept in `canonical/.claude/settings.json`.
+- [ ] Curate `canonical/.claude/settings.json` down to your own prefs (model/theme/effortLevel/
+      permissions/statusLine); drop the GSD-generated `hooks` block (GSD recreates it on install,
+      with the correct machine node path).
+- [ ] Bootstrap: install GSD (`npx gsd-core …`, regenerates hooks) then **merge** the canonical
+      prefs into `~/.claude/settings.json` (e.g. `jq -s '.[0] * .[1]'`) — don't overwrite.
 
-## Bootstrap (separate repo) — built
-- [x] `phillhood/bootstrap` built at `~/Dev/phillhood/bootstrap` (local, branch `main`):
-      `install.sh` + `lib/` (distro dispatch) + `steps/` + `packages/{core,cli,docker,k8s}.txt` + `kek/`.
-- [ ] Push it to GitHub (`gh repo create phillhood/bootstrap --public`) to enable the `curl | bash` one-liner.
-- [ ] Coordination: bootstrap clones dotfiles at `DOTFILES_BRANCH` (default `main`); until the stow
-      layout is on `main`, fresh-machine runs need `DOTFILES_BRANCH=stow`. Resolve when pushing `stow`.
+## Bootstrap (separate repo) — built + pushed
+- [x] `phillhood/bootstrap` built and pushed public to GitHub (`install.sh` + `lib/` + `steps/` +
+      `packages/{core,cli,docker,k8s}.txt` + `kek/`). `DOTFILES_BRANCH` defaults to `stow`, and `stow`
+      is now the dotfiles default branch, so `curl … | bash` works with no extra env.
+- [ ] Add a bootstrap step to apply `canonical/` configs on a fresh machine (see Claude Code above).
 - [ ] Port the deferred container smoke-test for end-to-end idempotency verification.

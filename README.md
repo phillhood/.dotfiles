@@ -15,13 +15,14 @@ config immediately — the deployed files are symlinks back into this repo.
 | `git`      | `~/.gitconfig`, `~/.gitconfig-shy`, `~/.gitignore_global` |
 | `tmux`     | `~/.tmux.conf`                                            |
 | `ssh`      | `~/.ssh/config`                                           |
-| `claude`   | `~/.claude/{settings.json,CLAUDE.md,hooks/,plugins/}`     |
+| `claude`   | `~/.claude/CLAUDE.md`, `~/.claude/hooks/uv-python.sh`      |
 | `bat`      | `~/.config/bat/config`                                    |
 | `htop`     | `~/.config/htop/htoprc`                                   |
 | `k9s`      | `~/.config/k9s/*`                                         |
 | `helm`     | `~/.config/helm/repositories.yaml`                        |
 
-Repo-only (not stowed): `tools/` (terminal colour-scheme tooling), `docs/`.
+Repo-only (not stowed): `tools/` (terminal colour-scheme tooling), `canonical/` (reference configs
+a plugin rewrites live — e.g. `.claude/settings.json` — applied by `bootstrap`, not stow).
 
 ## Usage
 

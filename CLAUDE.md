@@ -46,12 +46,16 @@ stow -n zsh      # dry-run
   identity) and `.gitignore_global`. Multi-account SSH is handled by `core.sshCommand`, not host
   aliases.
 - **`ssh/`** — only `.ssh/config`. Private keys are never tracked (this repo is public).
-- **`claude/`** — tracked pieces of `~/.claude`: `settings.json`, `CLAUDE.md`, `hooks/uv-python.sh`
-  (rewrites python/pip → uv), `plugins/known_marketplaces.json`. Runtime state, caches, and
-  credentials under `~/.claude` are NOT tracked and belong to no package.
+- **`claude/`** — the stable, hand-edited pieces of `~/.claude`: `CLAUDE.md` and
+  `hooks/uv-python.sh` (rewrites python/pip → uv). `settings.json` and `plugins/known_marketplaces.json`
+  are NOT stowed — Claude Code / the GSD framework rewrite them at runtime (which breaks the symlink
+  and churns the repo). Credentials, caches, and other runtime state under `~/.claude` are never tracked.
 - **`starship/`, `tmux/`, `bat/`, `htop/`, `k9s/`, `helm/`** — single-app config packages.
 - **`tools/`** — terminal colour-scheme conversion tooling (Material Monokai across
   kitty/iTerm2/fbterm/nvim/Windows Terminal). Repo-only, not stowed.
+- **`canonical/`** — reference copies of configs that are NOT stowed (e.g. `.claude/settings.json`,
+  which a plugin rewrites live) but kept for `bootstrap` to apply on a fresh machine. Mirrors `$HOME`;
+  absent from `PACKAGES`, so `make install` ignores it. See `canonical/README.md`.
 
 ## Provisioning
 

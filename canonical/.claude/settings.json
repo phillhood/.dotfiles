@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "default",
     "allow": [
       "Bash(npx gsd-core *)",
       "Read(.planning/*)",
@@ -12,7 +11,8 @@
       "Read(.env)",
       "Read(.env.*)",
       "Read(.secrets)"
-    ]
+    ],
+    "defaultMode": "default"
   },
   "model": "opus",
   "hooks": {
@@ -196,6 +196,7 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
+  "advisorModel": "fable",
   "theme": "dark",
   "remoteControlAtStartup": false,
   "agentPushNotifEnabled": true

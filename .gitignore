@@ -17,5 +17,7 @@ ssh/.ssh/known_hosts*
 claude/.claude/.credentials.json
 claude/.claude/history.jsonl
 claude/.claude/settings.local.json
+# settings.json is plugin-managed (GSD rewrites hooks) → untracked; canonical copy in canonical/
+claude/.claude/settings.json
 # plugin registry + marketplaces are runtime state Claude rewrites (breaks the symlink)
 claude/.claude/plugins/
