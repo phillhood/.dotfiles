@@ -12,10 +12,16 @@ Open follow-ups for the stow-based dotfiles.
       fastfetch, btop. Add as stow packages. Watch for machine-specific monitor/env lines.
 
 ## Claude Code (~/.claude)
-- [ ] ccline statusline binary + `~/.claude/ccline/{config.toml,models.toml,themes/}` are
-      installed locally but not tracked. Decide whether to track config and/or script the
-      install in the bootstrap repo.
-- [ ] Plugins: reinstall via `/plugin` if wanted, then re-add `enabledPlugins` to settings.json.
+- [ ] `settings.json` is tracked but non-portable: its GSD hooks + statusline hardcode a
+      specific fnm node path (`~/.local/share/fnm/node-versions/vX/.../node`) and reference
+      `gsd-*.js`/`gsd-*.sh` hook scripts that are NOT tracked in the `claude` package. On a
+      fresh machine (or after a node bump) every gsd hook + statusline breaks until that node
+      version and the hook scripts exist. Decide in the bootstrap repo: install the gsd hooks
+      + pin/relink node, or template the node path.
+- [ ] `known_marketplaces.json` tracks a `lastUpdated` timestamp that Claude bumps on every
+      marketplace refresh → recurring noise diffs. Decide whether to keep tracking it.
+- [ ] Root `.claude/settings.json` (this repo's own project allowlist) still permits
+      `chezmoi managed/status/diff/...` — dead entries now that chezmoi is gone; prune when convenient.
 
 ## Bootstrap (separate repo)
 - [ ] Build `phillhood/bootstrap`: install.sh, packages/{core,cli,docker,k8s}.txt,

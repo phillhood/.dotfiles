@@ -3,3 +3,17 @@
 
 # superpowers SDD scratch
 .superpowers/
+
+# ---- Public-repo secret guards (defense-in-depth) ----
+# The Makefile uses `stow --no-folding`, so ~/.ssh and ~/.claude are never folded
+# into repo-pointing dir symlinks — secrets should never reach the repo tree. These
+# scoped ignores are a backstop so a stray key/credential can never be committed.
+# ssh package: private keys and host state must NEVER be committed
+ssh/.ssh/id_*
+ssh/.ssh/*_key
+ssh/.ssh/*.pem
+ssh/.ssh/known_hosts*
+# claude package: credentials and per-user/runtime state
+claude/.claude/.credentials.json
+claude/.claude/history.jsonl
+claude/.claude/settings.local.json

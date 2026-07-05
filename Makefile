@@ -1,6 +1,11 @@
 # Stow-based dotfiles. Each top-level dir is a stow package mirroring $HOME.
+# --no-folding: always create real dirs + per-file symlinks, never fold a whole
+# directory into one symlink. Critical for the ssh/ and claude/ packages: without
+# it, stowing onto a machine where ~/.ssh or ~/.claude does not yet exist would
+# point that dir at this (public) repo, so a later ssh-keygen / credential write
+# would land a secret inside the repo tree. --no-folding prevents that.
 PACKAGES := zsh starship git tmux ssh claude bat htop k9s helm
-STOW := stow --verbose --target=$(HOME)
+STOW := stow --no-folding --verbose --target=$(HOME)
 
 .PHONY: help install stow unstow restow adopt
 
