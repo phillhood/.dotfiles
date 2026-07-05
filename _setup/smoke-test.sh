@@ -18,7 +18,7 @@ docker run --rm "$img" bash -euo pipefail -c '
     git clone --branch chezmoi https://github.com/phillhood/.dotfiles.git /tmp/dotfiles
     echo === FIRST RUN ===
     /tmp/dotfiles/_setup/bootstrap
-    echo === SECOND RUN (idempotency) ===
+    echo === SECOND RUN \(idempotency\) ===
     chezmoi apply
     echo === VERIFY ===
     command -v starship && command -v eza && command -v yay
