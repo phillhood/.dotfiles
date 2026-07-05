@@ -18,8 +18,6 @@ Open follow-ups for the stow-based dotfiles.
       fresh machine (or after a node bump) every gsd hook + statusline breaks until that node
       version and the hook scripts exist. Decide in the bootstrap repo: install the gsd hooks
       + pin/relink node, or template the node path.
-- [ ] `known_marketplaces.json` tracks a `lastUpdated` timestamp that Claude bumps on every
-      marketplace refresh → recurring noise diffs. Decide whether to keep tracking it.
 
 ## Bootstrap (separate repo) — built
 - [x] `phillhood/bootstrap` built at `~/Dev/phillhood/bootstrap` (local, branch `main`):

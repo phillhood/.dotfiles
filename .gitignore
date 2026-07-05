@@ -17,3 +17,5 @@ ssh/.ssh/known_hosts*
 claude/.claude/.credentials.json
 claude/.claude/history.jsonl
 claude/.claude/settings.local.json
+# plugin registry + marketplaces are runtime state Claude rewrites (breaks the symlink)
+claude/.claude/plugins/
