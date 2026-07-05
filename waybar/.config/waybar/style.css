@@ -1,0 +1,559 @@
+@define-color base   #24273a;
+@define-color mantle #1e2030;
+@define-color crust  #181926;
+
+@define-color text     #cad3f5;
+@define-color subtext0 #a5adcb;
+@define-color subtext1 #b8c0e0;
+
+@define-color surface0 #363a4f;
+@define-color surface1 #494d64;
+@define-color surface2 #5b6078;
+
+@define-color overlay0 #6e738d;
+@define-color overlay1 #8087a2;
+@define-color overlay2 #939ab7;
+
+@define-color blue      #8aadf4;
+@define-color lavender  #b7bdf8;
+@define-color sapphire  #7dc4e4;
+@define-color sky       #91d7e3;
+@define-color teal      #8bd5ca;
+@define-color green     #a6da95;
+@define-color yellow    #eed49f;
+@define-color peach     #f5a97f;
+@define-color maroon    #ee99a0;
+@define-color red       #ed8796;
+@define-color mauve     #c6a0f6;
+@define-color pink      #f5bde6;
+@define-color flamingo  #f0c6c6;
+@define-color rosewater #f4dbd6;
+
+/* Semantic aliases used throughout the stylesheet */
+@define-color bg   @base;
+@define-color fg   @text;
+@define-color grey @surface1;
+
+* {
+    font-family: "MesloLGS Nerd Font";
+    font-size: 14px;
+    font-weight: 900;
+    margin: 0;
+    padding: 0;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+}
+
+/* Reset all styles */
+* {
+    border: none;
+    border-radius: 0px;
+    min-height: 20px;
+    margin: 0rem 0rem 0rem 0rem;
+}
+
+window#waybar  {
+  background-color: transparent;
+}
+
+/* Container L1 */
+
+#l1 {
+  margin: 0px 4px 2px 4px;
+  padding: 0px 0px;
+  border-radius: 4px;
+  border: 1.5px solid @grey;
+  background-color: alpha(@base, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#l1 > widget,
+#l1 #custom-omarchy,
+#workspaces button {
+  border: none; 
+  border-right: 1.5px solid @grey; 
+  border-radius: 0;
+  margin: 0;
+}
+
+#l1 > widget:first-child,
+#l1 #custom-omarchy {
+  border-radius: 3px 0px 0px 3px;
+}
+
+#workspaces button:last-child {
+  border-right: none;
+  border-radius: 0px 3px 3px 0px;
+}
+
+/* Container L2 */
+
+#l2 {
+margin: 0px 4px 2px 4px;
+  padding: 2px 0px;
+  border-radius: 4px;
+  border: 1.5px solid @grey;
+  background-color: alpha(@base, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#l2 label, 
+#l2 > widget > label,
+#l2 > widget {
+  padding: 0px 9px;
+  margin: 0px 0px;
+  color: @fg;
+  font-weight: 900;
+  font-size: 14px;
+  border-right: 0.5px solid @grey; 
+}
+
+#l2 > widget:first-child label,
+#l2 > widget:first-child {
+  border-radius: 3px 0px 0px 3px;
+}
+
+#l2 > widget:last-child label,
+#l2 > widget:last-child {
+  border-radius: 0px 3px 3px 0px;
+  border-right: none; 
+}
+
+window#waybar.empty #l3,
+window#waybar.empty #mpris {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+/* Container module right */
+
+#r1 {
+margin: 0px 4px 2px 2px;
+  padding: 2px 0px;
+  border-radius: 4px;
+  border: 1.5px solid @grey;
+  background-color: alpha(@base, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#r1 label, 
+#r1 > widget > label,
+#r1 > widget {
+  padding: 0px 9px;
+  margin: 0px 0px;
+  color: @fg;
+  font-weight: 900;
+  font-size: 14px;
+  border-right: 0.5px solid @grey; 
+}
+
+#r1 > widget:first-child label,
+#r1 > widget:first-child {
+  border-radius: 3px 0px 0px 3px;
+}
+
+#r1 > widget:last-child label,
+#r1 > widget:last-child {
+  border-radius: 0px 3px 3px 0px;
+  border-right: none;
+}
+
+/* Container tray box (right) + clock box (right) */
+
+#r3,
+#r4,
+#r5 {
+  margin: 0px 4px 2px 2px;
+  padding: 2px 0px;
+  border-radius: 4px;
+  border: 1.5px solid @grey;
+  background-color: alpha(@base, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#r3 label,
+#r3 > widget,
+#r5 label,
+#r5 > widget {
+  padding: 0px 9px;
+  margin: 0px 0px;
+  color: @fg;
+  font-weight: 900;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+#r4 label,
+#r4 > widget > label,
+#r4 > widget {
+  padding: 0px 9px;
+  margin: 0px 0px;
+  color: @fg;
+  font-weight: 900;
+  font-size: 14px;
+  border-right: 0.5px solid @grey;
+}
+
+#r4 > widget:first-child label,
+#r4 > widget:first-child {
+  border-radius: 3px 0px 0px 3px;
+}
+
+#r4 > widget:last-child label,
+#r4 > widget:last-child {
+  border-radius: 0px 3px 3px 0px;
+  border-right: none;
+}
+
+/* Container module center */
+
+.modules-center {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+#workspaces {
+  border-radius: 5px;
+  background-color: alpha(@base, 0.55);
+  transition: 0.1s ease-in-out;
+}
+
+#workspaces button {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
+  padding: 0px 9px;
+  margin: 1px 1px;
+  color: @red;
+  opacity: 1;
+  font-weight: 900;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+#workspaces button.active {
+  color: @bg;
+  border-radius: 2px;
+  background-color: @red;
+  padding: 0px 9px;
+  margin: 1px 1px;
+  opacity: 1.0;
+}
+
+#workspaces button.empty:hover, 
+#workspaces button:hover {
+    background: transparent;
+    color: @fg;
+    transition: all 150ms ease;
+    opacity: 1;
+}
+
+#workspaces button.empty {
+  opacity: 1;
+  border-radius: 2px;
+  padding: 0px 9px;
+  margin: 1px 1px;
+  color: alpha(@fg, 0.25);
+}
+
+#workspaces button.empty.active {
+  opacity: 1;
+  border-radius: 2px;
+  padding: 0px 9px;
+  margin: 1px 1px;
+  background-color: alpha(@fg, 0.75);
+  color: @bg;
+}
+
+#custom-omarchy {
+    background-image: url("bob2.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 92%;
+    border-radius: 3px;
+  }
+
+
+  /* L1 single groups */
+#custom-cava,
+#memory,
+#mpris,
+#cpu,
+#battery,
+#backlight,
+#network,
+#bluetooth,
+#pulseaudio,
+#power-profiles-daemon,
+#power-profiles-daemon.performance,
+#power-profiles-daemon.balanced,
+#power-profiles-daemon.power-saver,
+#custom-omarchy {
+  min-width: 15px;
+  color: @fg;
+  opacity: 1;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+#network.disconnected,
+#network.wifi,
+#network.ethernet {
+  padding-right: 13px;
+}
+
+#battery.discharging,
+#battery.full,
+#battery.plugged,
+#battery.charging {
+  padding-right: 14px;
+}
+
+/* L2 single groups */
+
+#tray,
+#idle_inhibitor,
+#custom-idle-indicator,
+#custom-notification-silencing-indicator,
+#custom-updatespacman,
+#custom-screenrecording-indicator,
+#custom-update {
+  min-width: 15px;
+  color: @fg;
+  opacity: 1;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+#tray {
+padding-top: 0px;
+}
+
+#power-profiles-daemon.power-saver {
+padding-right: 14px;
+}
+
+#custom-idle-indicator,
+#custom-notification-silencing-indicator {
+  min-width: 12px;
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 14px;
+  padding-bottom: 0px;
+}
+
+#custom-idle-indicator.active,
+#custom-notification-silencing-indicator.active {
+  color: #a55555;
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+tooltip {
+ padding: 4px;
+ background: @bg;
+ font-size: 10px;
+ border: 2px solid @grey;
+ border-radius: 8px;
+ 
+}
+tooltip label {
+    color: alpha(@fg, 0.65);
+    font-weight: normal;
+}
+
+#custom-voxtype {
+  min-width: 12px;
+  margin: 0 0 0 2.5px;
+}
+
+#custom-voxtype.recording {
+  color: #a55555;
+}
+
+/* Specific animation Module */
+
+
+#custom-screenrecording-indicator {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  color: transparent;
+}
+
+#custom-screenrecording-indicator.active {
+  color: #eb7087;
+  animation-name: blink-recording;
+  animation-duration: 0.5s;
+}
+
+@keyframes blink-recording {
+    to {
+        color: @bg;
+    }
+}
+
+@keyframes blink-inhibitor {
+    to {
+        color: @bg;
+    }
+}
+
+#custom-cava {
+  margin: 0px 2px 2px 2px;
+  padding: 2px 9px;
+  border-radius: 4px;
+  border: 1.5px solid @grey;
+  background-color: alpha(@base, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+opacity: 1;
+transition: opacity 600ms ease-in-out;
+color: @fg;
+font-size: 10px;
+letter-spacing: -1px;
+}
+
+#custom-cava.silent {
+  opacity: 0;
+}
+
+/* Now-playing box (mpris + media control drawer) */
+
+#l3 {
+  margin: 0px 4px 2px 2px;
+  padding: 2px 0px;
+  border-radius: 4px;
+  border: 1.5px solid @grey;
+  background-color: alpha(@base, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#mpris {
+  padding: 0px 9px;
+  opacity: 1;
+  color: @fg;
+  border-radius: 3px 0px 0px 3px;
+  animation: repeat;
+	animation-name: blink;
+	animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#custom-media-prev,
+#custom-media-playpause,
+#custom-media-next {
+  padding: 0px 7px;
+  color: @fg;
+}
+
+#custom-media-prev {
+  border-left: 1.5px solid @grey;
+}
+
+#custom-media-prev:hover,
+#custom-media-playpause:hover,
+#custom-media-next:hover {
+  color: @mauve;
+}
+
+@keyframes blink {
+    to {
+        color: #4a4a4a;
+        
+    }
+}
+
+#network.disconnected,
+#battery.warning {
+  color: #c95d0f;
+}
+
+@keyframes blink2 {
+  to {
+    background-color: transparent;
+    color: #f53c3c;
+  }
+}
+
+#battery.critical:not(.charging) {
+  background-color: transparent;
+  color: #e6d8ba;
+  animation-name: blink2;
+  animation-duration: 0.5s;
+  animation-timing-function: steps(12);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#pulseaudio.warning,
+#memory.warning,
+#cpu.warning {
+    color: #e3c1b1; /* medium load */
+}
+
+#pulseaudio.critical,
+#memory.critical,
+#cpu.critical {
+    color: #df6124; /* high load */
+}
+
+/* Audio volume slider (click-to-reveal drawer) */
+
+#pulseaudio-slider {
+  margin: 4px 8px;
+  padding: 0 2px;
+  background-color: transparent;
+}
+
+#pulseaudio-slider trough {
+  min-height: 8px;
+  min-width: 90px;
+  border-radius: 10px;
+  background-color: @surface1;
+}
+
+#pulseaudio-slider highlight {
+  min-height: 8px;
+  border-radius: 10px;
+  background-color: @green;
+}
+
+#pulseaudio-slider slider {
+  min-height: 12px;
+  min-width: 12px;
+  margin: -3px 0;
+  border-radius: 100%;
+  background-color: @green;
+}
+
+/* Container L0 — Arch launcher button */
+#l0 {
+  margin: 0px 2px 2px 0px;
+  padding: 2px 0px;
+  border-radius: 4px;
+  border: 1.5px solid @grey;
+  background-color: alpha(@base, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+}
+
+#custom-arch {
+  color: @blue;
+  font-size: 16px;
+  min-width: 15px;
+  padding: 0px 12px 0px 8px;
+  border-radius: 3px;
+}
+
+#custom-arch:hover {
+  background-color: alpha(@blue, 0.15);
+  transition: all 150ms ease;
+}

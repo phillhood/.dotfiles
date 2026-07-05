@@ -4,7 +4,7 @@
 # it, stowing onto a machine where ~/.ssh or ~/.claude does not yet exist would
 # point that dir at this (public) repo, so a later ssh-keygen / credential write
 # would land a secret inside the repo tree. --no-folding prevents that.
-PACKAGES := zsh starship git tmux ssh claude bat htop k9s helm
+PACKAGES := zsh starship git tmux ssh claude bat htop k9s helm hypr waybar walker ghostty btop cava fastfetch
 STOW := stow --no-folding --verbose --target=$(HOME)
 
 .PHONY: help install stow unstow restow adopt

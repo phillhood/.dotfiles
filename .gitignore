@@ -22,3 +22,11 @@ claude/.claude/settings.local.json
 claude/.claude/settings.json
 # plugin registry + marketplaces are runtime state Claude rewrites (breaks the symlink)
 claude/.claude/plugins/
+
+# ---- Desktop packages: build/backup/state, never track ----
+# hypr bundles a git-clone of split-monitor-workspaces (rebuilt by hyprpm)
+hypr/.config/hypr/plugins/
+# waybar keeps old config snapshots
+waybar/.config/waybar/backup/
+# editor/backup copies anywhere
+*.bak

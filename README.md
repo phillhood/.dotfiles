@@ -20,6 +20,13 @@ config immediately — the deployed files are symlinks back into this repo.
 | `htop`     | `~/.config/htop/htoprc`                                   |
 | `k9s`      | `~/.config/k9s/*`                                         |
 | `helm`     | `~/.config/helm/repositories.yaml`                        |
+| `hypr`     | `~/.config/hypr/{hyprland.lua,themes,scripts}` (plugins/ + *.bak excluded) |
+| `waybar`   | `~/.config/waybar/{config.jsonc,style.css,*.sh}` (backup/ + *.bak excluded) |
+| `walker`   | `~/.config/walker/*`                                      |
+| `ghostty`  | `~/.config/ghostty/*`                                     |
+| `btop`     | `~/.config/btop/*`                                        |
+| `cava`     | `~/.config/cava/*`                                        |
+| `fastfetch`| `~/.config/fastfetch/*`                                   |
 
 Repo-only (not stowed): `tools/` — terminal colour-scheme tooling, plus `tools/canonical/` (reference
 configs a plugin rewrites live — e.g. `.claude/settings.json` — applied by `bootstrap`, not stow).
