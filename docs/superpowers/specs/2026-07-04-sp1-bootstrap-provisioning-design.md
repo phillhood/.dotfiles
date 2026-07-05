@@ -7,7 +7,7 @@
 ## Context
 
 The `chezmoi` branch migrated the dotfiles from stow to chezmoi, but `_setup/` is still the
-pre-chezmoi bootstrap: it installs stow/nvm/oh-my-posh, ends with `stow .`, and its 25 per-tool
+pre-chezmoi bootstrap: it installs stow/nvm/oh-my-posh, ends with `stow .`, and its 22 per-tool
 dependency scripts don't match the tools the current `.zshrc`/configs actually use. This sub-project
 rewrites provisioning so a bare Arch machine can be taken to the current working setup with one
 command, chezmoi-native.
@@ -118,7 +118,7 @@ zinit self-clones in `.zshrc`; starship/atuin/zoxide/direnv/fzf/uv are activated
 
 ## Repo changes
 
-**Removed:** `_setup/_dependencies/` (all 25 per-tool scripts); old `_setup/setup`.
+**Removed:** `_setup/_dependencies/` (all 22 per-tool scripts); old `_setup/setup`.
 
 **Added:**
 ```

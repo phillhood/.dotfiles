@@ -4,7 +4,7 @@
 
 **Goal:** A fresh Arch machine is provisioned to the current working setup with one command — `_setup/bootstrap` installs git+chezmoi, then `chezmoi init --apply` installs the correct toolchain via yay and lays down all tracked dotfiles, idempotently.
 
-**Architecture:** chezmoi-native provisioning (Approach C from the spec). A minimal `_setup/bootstrap` is the bare-machine entrypoint; the real work runs during `chezmoi apply` via `.chezmoidata/packages.yaml` (grouped package lists) + `.chezmoiscripts/` (one templated installer that runs `yay -S --needed`, plus four small post-install scripts). Replaces the stow-era `_setup/` (25 per-tool scripts + `stow .`).
+**Architecture:** chezmoi-native provisioning (Approach C from the spec). A minimal `_setup/bootstrap` is the bare-machine entrypoint; the real work runs during `chezmoi apply` via `.chezmoidata/packages.yaml` (grouped package lists) + `.chezmoiscripts/` (one templated installer that runs `yay -S --needed`, plus four small post-install scripts). Replaces the stow-era `_setup/` (22 per-tool scripts + `stow .`).
 
 **Tech Stack:** chezmoi v2.70.5 (templates, `.chezmoidata`, `.chezmoiscripts`, `promptBoolOnce`), bash, yay (AUR helper), pacman, Arch Linux.
 
@@ -37,7 +37,7 @@
 - `_setup/smoke-test.sh` — container end-to-end test harness.
 
 **Delete:**
-- `_setup/_dependencies/` (all 25 per-tool scripts).
+- `_setup/_dependencies/` (all 22 per-tool scripts).
 - `_setup/setup` (old stow/nvm/ohmyposh bootstrap).
 
 **Modify:**
