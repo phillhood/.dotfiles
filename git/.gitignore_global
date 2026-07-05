@@ -1,6 +1,6 @@
 # Global git ignore (referenced by ~/.gitconfig core.excludesfile)
 
-# OS
+# MacOS
 .DS_Store
 Thumbs.db
 
@@ -27,3 +27,5 @@ __pycache__/
 
 # Node
 node_modules/
+
+**/.claude/settings.local.json
