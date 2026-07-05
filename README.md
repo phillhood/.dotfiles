@@ -1,53 +1,63 @@
-# Dotfiles (chezmoi)
+# dotfiles
 
-Personal dotfiles managed with [chezmoi](https://chezmoi.io). This is the `chezmoi`
-branch — a migration of the old [stow](https://www.gnu.org/software/stow/)-based `main`
-branch to chezmoi, targeting Arch Linux (Hyprland/Wayland).
+Personal dotfiles for Arch Linux (Hyprland/Wayland), managed with [GNU Stow](https://www.gnu.org/software/stow/).
+
+Each top-level directory is a **stow package** that mirrors the layout under `$HOME`.
+`stow <package>` symlinks its contents into place. Editing a file here changes the live
+config immediately — the deployed files are symlinks back into this repo.
 
 ## Layout
 
-Source lives in `~/.local/share/chezmoi` (this repo). chezmoi maps source names to the
-home directory: `dot_zshrc` → `~/.zshrc`, `dot_config/…` → `~/.config/…`.
+| Package    | Symlinks into                                             |
+| ---------- | --------------------------------------------------------- |
+| `zsh`      | `~/.zshrc`, `~/.hushlogin`, `~/.config/utils/*`           |
+| `starship` | `~/.config/starship.toml`                                 |
+| `git`      | `~/.gitconfig`, `~/.gitconfig-shy`, `~/.gitignore_global` |
+| `tmux`     | `~/.tmux.conf`                                            |
+| `ssh`      | `~/.ssh/config`                                           |
+| `claude`   | `~/.claude/{settings.json,CLAUDE.md,hooks/,plugins/}`     |
+| `bat`      | `~/.config/bat/config`                                    |
+| `htop`     | `~/.config/htop/htoprc`                                   |
+| `k9s`      | `~/.config/k9s/*`                                         |
+| `helm`     | `~/.config/helm/repositories.yaml`                        |
 
-| Source                     | Target                     | Notes                                   |
-| -------------------------- | -------------------------- | --------------------------------------- |
-| `dot_zshrc`                | `~/.zshrc`                 | zinit plugins + starship + atuin + fnm  |
-| `dot_gitconfig`            | `~/.gitconfig`             |                                         |
-| `dot_gitignore_global`     | `~/.gitignore_global`      | referenced by gitconfig `excludesfile`  |
-| `dot_hushlogin`            | `~/.hushlogin`             |                                         |
-| `dot_tmux.conf`            | `~/.tmux.conf`             | tpm + resurrect                         |
-| `dot_config/starship.toml` | `~/.config/starship.toml`  | prompt (catppuccin mocha)               |
-| `dot_config/utils/`        | `~/.config/utils/`         | shell helpers sourced by `.zshrc`       |
-| `dot_config/k9s/`          | `~/.config/k9s/`           | k8s (tools installed separately)        |
-| `dot_config/helm/`         | `~/.config/helm/`          | helm repos                              |
-| `dot_config/htop/`         | `~/.config/htop/`          |                                         |
-
-Repo-only (see `.chezmoiignore`, not deployed to `$HOME`): `_setup/` (bootstrap scripts),
-`_utils/` (terminal colour tooling), `README.md`, `TODO.md`.
-
-## Toolchain
-
-| Category | Tool |
-| --- | --- |
-| Shell | zsh + [zinit](https://github.com/zdharma-continuum/zinit) |
-| Prompt | [starship](https://starship.rs) |
-| History | [atuin](https://atuin.sh) |
-| Node | [fnm](https://github.com/Schniz/fnm) |
-| Python | [uv](https://github.com/astral-sh/uv) |
-| Nav / find | [zoxide](https://github.com/ajeetdsouza/zoxide), [fzf](https://github.com/junegunn/fzf) |
-| ls/cat/grep | eza, bat, ripgrep |
+Repo-only (not stowed): `tools/` (terminal colour-scheme tooling), `docs/`.
 
 ## Usage
 
-```sh
-# On a new machine (bare Arch) — installs deps + applies dotfiles
-git clone --branch chezmoi https://github.com/phillhood/.dotfiles.git /tmp/dotfiles
-/tmp/dotfiles/_setup/bootstrap   # run as your normal user, NOT root
+Prerequisite: `stow` installed (`sudo pacman -S stow`).
 
-# Day to day
-chezmoi edit ~/.zshrc # edit source, then:
-chezmoi apply
-chezmoi cd            # jump into the source repo to commit/push
+```sh
+git clone https://github.com/phillhood/.dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+make install          # symlink every package into $HOME
 ```
 
-See [`TODO.md`](./TODO.md) for outstanding migration items (nvim, Hyprland rice, .claude).
+Common operations:
+
+```sh
+make stow             # symlink all packages (idempotent)
+make unstow           # remove all symlinks
+make restow           # re-link after adding/renaming files
+stow git tmux         # stow individual packages
+stow -D k9s           # unstow a single package
+stow -n zsh           # dry-run (show what would happen)
+```
+
+`make install` only creates symlinks — it does **not** install software.
+
+## Fresh machine
+
+This repo assumes the required packages are already installed. To provision a bare
+machine (install packages, then clone + stow these dotfiles), see
+[`phillhood/bootstrap`](https://github.com/phillhood/bootstrap).
+
+## Migrating an existing machine
+
+If the target files already exist as real files (e.g. migrating off another dotfile
+manager), take them over once with:
+
+```sh
+make adopt            # stow --adopt: replaces real files with symlinks
+git status            # should be clean; any diff is live drift to review
+```

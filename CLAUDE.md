@@ -4,75 +4,58 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Personal dotfiles managed with [chezmoi](https://chezmoi.io), targeting Arch Linux (Hyprland/Wayland).
-This is the `chezmoi` branch — an in-progress migration of the old [stow](https://www.gnu.org/software/stow/)-based
-`main` branch. Outstanding migration items live in [`TODO.md`](./TODO.md).
+Personal dotfiles for Arch Linux (Hyprland/Wayland), managed with [GNU Stow](https://www.gnu.org/software/stow/).
+This is the `stow` branch — a migration off the earlier chezmoi setup. The dotfiles repo does **only**
+symlink management; machine provisioning (package installs, post-install steps) lives in a separate
+`bootstrap` repo.
 
-## The one thing to understand: source-name mapping
+## The model: stow packages
 
-This repo **is** the chezmoi source directory (`~/.local/share/chezmoi`). chezmoi translates
-source filenames into `$HOME` targets — the repo does not mirror `$HOME` literally. You edit the
-`dot_*` source files here; running `chezmoi apply` renders them into place. **Never edit the deployed
-`~/.zshrc` etc. directly** — it gets overwritten on the next apply.
+Each top-level directory (`zsh/`, `git/`, `tmux/`, …) is a **stow package** whose contents mirror the
+layout under `$HOME`. `stow <package>` creates symlinks: `zsh/.zshrc` → `~/.zshrc`,
+`starship/.config/starship.toml` → `~/.config/starship.toml`, and so on.
 
-Naming attributes encoded in source filenames:
+**Deployed files are symlinks back into this repo.** Edit `zsh/.zshrc` here and `~/.zshrc` reflects it
+immediately — there is no apply/render step. They are the same inode; never expect the repo and the
+target to diverge.
 
-| Source name                         | Target / effect                          |
-| ----------------------------------- | ---------------------------------------- |
-| `dot_zshrc`                         | `~/.zshrc` (`dot_` → `.`)                |
-| `dot_config/k9s/config.yaml`        | `~/.config/k9s/config.yaml`              |
-| `executable_uv-python.sh`           | target file gets the executable bit      |
-| `private_htoprc`                    | target file gets mode `0600`             |
-| `_setup/`, `_utils/` (`_` prefix)   | ignored by chezmoi — repo-only, not deployed |
-
-`.chezmoiignore` is the other half: it lists paths that stay in the repo as reference/tooling
-(`README.md`, `TODO.md`, `_setup`, `_utils`) plus defensive guards so `~/.claude` secrets and
-runtime state can never be swept into version control.
+When you **add a new file** to a package, re-link with `make restow` (stow only links files that exist
+at stow time).
 
 ## Commands
 
-There is no build/test/lint — the "commands" are the chezmoi lifecycle:
-
 ```sh
-chezmoi diff                 # preview what apply would change (run this before applying)
-chezmoi apply                # render source → $HOME
-chezmoi edit ~/.zshrc        # edit the source of a target, then apply
-chezmoi add ~/.config/foo    # start tracking a live file (imports it as a dot_* source)
-chezmoi re-add               # pull edits made directly to already-tracked targets back into source
-chezmoi cd                   # jump into this repo to commit/push
+make install     # symlink all packages into $HOME (alias: make stow)
+make unstow      # remove all symlinks
+make restow      # re-link after adding/renaming files
+make adopt       # one-time: take over pre-existing real files as symlinks
+stow git tmux    # stow individual packages
+stow -D k9s      # unstow one package
+stow -n zsh      # dry-run
 ```
 
-When you change a `dot_*` file in this repo, deploy it with `chezmoi apply` and confirm with
-`chezmoi diff` (should be clean). A source edit is not "done" until applied.
+`make install` does not install software — package provisioning is the `bootstrap` repo's job.
 
 ## Layout
 
-- **`dot_zshrc`** — the shell entrypoint: zinit plugins, starship prompt, atuin history, fnm (node),
-  uv (python), zoxide/fzf. At the bottom it sources every file in `~/.config/utils/*`, then sources a
-  distro-specific file `~/.config/utils/distro/<os-release $ID>` (e.g. `arch`).
-- **`dot_config/utils/`** — plain shell files of functions/aliases sourced by `.zshrc`
-  (`general`, `docker`, `k8s`, and `distro/arch`). Add a new helper by dropping a file here; it is
-  auto-sourced on next shell start. `distro/<id>` files hold per-distro config.
-- **`dot_claude/`** — tracks hand-maintained pieces of `~/.claude`: `settings.json`, the
-  `uv-python.sh` hook, and `plugins/known_marketplaces.json`. The statusline
-  (`~/.claude/ccline/ccline`) is a separately-installed binary that `settings.json` only references
-  (not tracked here). Treat the `.chezmoiignore` `~/.claude` guard block as load-bearing — never
-  track credentials/history/caches.
-- **`_setup/`** — **stale, stow-era bootstrap** (see below). Not wired into the chezmoi workflow.
-- **`_utils/terminals/`** — terminal colour-scheme conversion tooling (Material Monokai across
-  kitty/iTerm2/fbterm/nvim/Windows Terminal via `convert_colours.py`).
+- **`zsh/`** — `.zshrc` (zinit, starship, atuin, fnm, uv, zoxide/fzf), `.hushlogin`, and
+  `.config/utils/*` (shell function/alias files sourced by `.zshrc`: `general`, `docker`, `k8s`, and
+  `distro/arch`). `.zshrc` sources every file in `~/.config/utils/*`, then a distro-specific
+  `~/.config/utils/distro/<os-release $ID>`. Add a helper by dropping a file in `zsh/.config/utils/`
+  and running `make restow`.
+- **`git/`** — `.gitconfig` (with a per-directory `includeIf` → `.gitconfig-shy` for the hobby
+  identity) and `.gitignore_global`. Multi-account SSH is handled by `core.sshCommand`, not host
+  aliases.
+- **`ssh/`** — only `.ssh/config`. Private keys are never tracked (this repo is public).
+- **`claude/`** — tracked pieces of `~/.claude`: `settings.json`, `CLAUDE.md`, `hooks/uv-python.sh`
+  (rewrites python/pip → uv), `plugins/known_marketplaces.json`. Runtime state, caches, and
+  credentials under `~/.claude` are NOT tracked and belong to no package.
+- **`starship/`, `tmux/`, `bat/`, `htop/`, `k9s/`, `helm/`** — single-app config packages.
+- **`tools/`** — terminal colour-scheme conversion tooling (Material Monokai across
+  kitty/iTerm2/fbterm/nvim/Windows Terminal). Repo-only, not stowed.
 
-## `_setup/` bootstrap architecture
+## Provisioning
 
-`_setup/setup` is a fresh-machine provisioner from the pre-chezmoi era. It detects the distro from
-`/etc/os-release`, then iterates `_dependencies/<N_phase>/` directories in `sort -V` order; each file
-in a phase is an install script run as `zsh <file> $DISTRO`. A script signals success by
-`touch`-ing `$MARKER_DIR/<its-name>`, which the runner checks to print ✓/✗.
-
-**It has not been migrated:** it still ends with `stow .` and installs nvm/oh-my-posh rather than the
-current chezmoi/starship/fnm stack. Do not treat it as the working bootstrap path — updating it is an
-open TODO item.
-
-## State note
-
-This branch has no commits yet — everything is currently untracked. The default branch for PRs is `main`.
+Package installs and post-install steps (set default shell, tmux tpm, rustup, fnm, docker) are **not**
+in this repo. They live in `phillhood/bootstrap`, which installs packages then clones + `make install`s
+these dotfiles. One-way dependency: bootstrap → dotfiles.
