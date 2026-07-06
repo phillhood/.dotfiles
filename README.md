@@ -63,9 +63,18 @@ machine (install packages, then clone + stow these dotfiles), see
 ## Migrating an existing machine
 
 If the target files already exist as real files (e.g. migrating off another dotfile
-manager), take them over once with:
+manager), take them over once with `make adopt`.
+
+> [!CAUTION]
+> `make adopt` is a **one-time migration** step. For any package file that already exists as a
+> real file at the target, it moves that local file *into* the repo — overwriting the tracked
+> copy — then symlinks it back. Run it from a clean tree and **review `git diff` afterward**:
+> every adopted change shows up there. Commit what you want to keep, and discard local drift with
+> `git restore .`. Re-running it later can silently clobber committed config with stale local files.
 
 ```sh
-make adopt            # stow --adopt: replaces real files with symlinks
-git status            # should be clean; any diff is live drift to review
+git status            # start from a clean tree
+make adopt            # stow --adopt: pull existing real files into the repo, then symlink
+git diff              # review every adopted change — this is your safety check
+git restore .         # discard unwanted drift (or commit to keep it)
 ```

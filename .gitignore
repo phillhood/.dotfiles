@@ -1,15 +1,11 @@
-# Claude Code's own project config for THIS repo (not part of the dotfiles) — never track.
-# Anchored (leading /) so it hits ONLY the repo root, not the claude/.claude/ stow package.
+# Claude Code's config for THIS repo (leading / = repo root only, not the claude/ package)
 /.claude/
 
 # superpowers SDD scratch
 .superpowers/
 
-# ---- Public-repo secret guards (defense-in-depth) ----
-# The Makefile uses `stow --no-folding`, so ~/.ssh and ~/.claude are never folded
-# into repo-pointing dir symlinks — secrets should never reach the repo tree. These
-# scoped ignores are a backstop so a stray key/credential can never be committed.
-# ssh package: private keys and host state must NEVER be committed
+# ---- Public-repo secret guards (backstop; --no-folding already prevents dir-symlink leaks) ----
+# ssh: private keys + host state
 ssh/.ssh/id_*
 ssh/.ssh/*_key
 ssh/.ssh/*.pem
