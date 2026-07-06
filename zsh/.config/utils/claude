@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+# --- One-off question ---
+# Uses subscription auth (via the claude binary) but skips loading settings,
+# hooks, plugins and MCP servers so it's ~2x faster. Keep --model as the last
+# flag before "$*" so --mcp-config doesn't swallow the prompt.
+ask() {
+  setopt local_options local_traps no_monitor   # silence [job] messages; scope trap
+  local tmp; tmp=$(mktemp)
+  claude -p \
+    --setting-sources '' \
+    --strict-mcp-config --mcp-config '{"mcpServers":{}}' \
+    --model haiku "$*" >"$tmp" 2>&1 &
+  local pid=$! i=1
+  local frames=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)
+  # Ctrl-C: restore cursor, kill the request, clean up
+  trap 'printf "\r\033[K\033[?25h" >&2; kill $pid 2>/dev/null; rm -f "$tmp"; return 130' INT
+  printf '\033[?25l' >&2                          # hide cursor
+  while kill -0 $pid 2>/dev/null; do
+    printf '\r %s' "${frames[i]}" >&2             # spinner on stderr, own line
+    i=$(( i % ${#frames} + 1 ))
+    sleep 0.08
+  done
+  wait $pid; local rc=$?
+  printf '\r\033[K\033[?25h\n' >&2                # clear spinner, show cursor, next line
+  command cat "$tmp"; rm -f "$tmp"                # 'command' bypasses cat->bat alias
+  return $rc
+}

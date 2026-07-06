@@ -5,6 +5,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.local/share/fnm:$PATH"
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # ---- zinit (plugin manager) ----
@@ -52,21 +53,13 @@ bindkey '^n' history-search-forward
 # ---- Prompt ----
 eval "$(starship init zsh)"
 
-# ---- Tool integrations ----
-eval "$(zoxide init zsh --cmd cd)"
+# ---- Shell integrations ----
+eval "$(fnm env --use-on-cd --shell zsh)"
+eval "$(uv generate-shell-completion zsh)"
 eval "$(fzf --zsh)"
 eval "$(atuin init zsh --disable-up-arrow)"
 eval "$(direnv hook zsh)"
-
-# fnm (node)
-export PATH="$HOME/.local/share/fnm:$PATH"
-eval "$(fnm env --use-on-cd --shell zsh)"
-
-# uv (python)
-eval "$(uv generate-shell-completion zsh)"
-
-# Speed up fzf walking
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --walker-skip=.git,node_modules,target"
+eval "$(zoxide init zsh --cmd cd)"
 
 # ---- Aliases ----
 alias c='clear'
@@ -91,13 +84,15 @@ alias kns='kubens'
 
 # ---- Environment ----
 export SOPS_AGE_KEY_FILE="$HOME/.age/dev.txt"
+# Speed up fzf walking
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --walker-skip=.git,node_modules,target"
 
-# ---- Personal shell utils (~/.config/utils/*) ----
-for file in $HOME/.config/utils/*(.N); do
+# ---- Personal shell utils ----
+for file in $HOME/.config/utils/*(-.N); do
   [ -r "$file" ] && source "$file"
 done
 
-# ---- Distro-specific config (~/.config/utils/distro/<id>) ----
+# ---- Distro-specific configs + utils ----
 if [ -f /etc/os-release ]; then
   . /etc/os-release
   distro_file="$HOME/.config/utils/distro/$ID"
