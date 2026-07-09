@@ -43,8 +43,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("bash -c 'pkill -x waybar 2>/dev/null; d=1; while true; do t=$SECONDS; waybar; if [ $((SECONDS-t)) -ge 10 ]; then d=1; else d=$(( d<8 ? d*2 : 8 )); fi; sleep $d; done'")
 	hl.exec_cmd("swaync")
 	hl.exec_cmd("awww-daemon")
-	hl.exec_cmd("sleep 1 && awww img -o DP-3 ~/Pictures/Wallpapers/cyberpunk_landscape.jpg")
-	hl.exec_cmd("sleep 1 && awww img -o DP-2 ~/Pictures/Wallpapers/cyberpunk_portrait.jpg")
+	hl.exec_cmd("bash -c 'until awww query >/dev/null 2>&1; do sleep 0.2; done; L=~/Pictures/Wallpapers/cyberpunk_landscape.jpg; P=~/Pictures/Wallpapers/cyberpunk_portrait.jpg; awww img -o DP-3 $L; awww img -o DP-2 $P; while sleep 2; do awww query 2>/dev/null | grep DP-3 | grep -q color: && awww img -o DP-3 $L; awww query 2>/dev/null | grep DP-2 | grep -q color: && awww img -o DP-2 $P; done'")
 	hl.exec_cmd("wl-paste --watch cliphist store")
 	hl.exec_cmd("nm-applet --indicator")
 	-- XEmbed->SNI bridge for Wine/Battle.net tray icons. sleep 2 avoids racing
@@ -92,7 +91,7 @@ hl.config({
 			-- active_border = { colors = { "rgb(ff2ed6)", "rgb(00e5ff)" }, angle = 45 },
 			-- active_border = { colors = { "rgb(ff2ed6)", "rgb(ff2ed6)", "rgb(00e5ff)", "rgb(00e5ff)" }, angle = 45 },
 			-- Solid neon cyan, no gradient.
-			active_border = { colors = { "rgb(00e5ff)" } },
+			active_border = { colors = { "rgb(cba6f7)" } },
 			inactive_border = colors.surface0,
 		},
 	},
@@ -164,6 +163,36 @@ hl.window_rule({
 		class = "^swappy$",
 	},
 	float = true,
+})
+
+-- Transparency overrides
+hl.window_rule({
+	match = { class = "brave-browser" },
+	opacity = "1.0 override",
+})
+
+hl.window_rule({
+	match = { class = "spotify" },
+	opacity = "1.0 override",
+})
+
+hl.window_rule({
+	match = { class = "^.*Discord$" },
+	opacity = "1.0 override",
+})
+
+------------------------
+----  LAYER RULES   ----
+------------------------
+
+-- shypad sticky notes: frost the translucent layer surface (namespace "shypad").
+-- ignore_alpha keeps the fully-transparent gutter from being blurred, so only the
+-- note body frosts, not the whole surface rectangle.
+hl.layer_rule({
+	name = "shypad-glass",
+	match = { namespace = "^shypad$" },
+	blur = true,
+	ignore_alpha = 0.2,
 })
 
 --------------------
@@ -288,4 +317,6 @@ hl.bind(mod .. " + mouse_up", smw.cycle_workspaces("next"))
 --- Move orphaned windows (not assigned to any mapped workspace) to the current workspace.
 hl.bind(mod2 .. " + G", smw.grab_rogue_windows())
 
--- i use arch btw
+-- TODO: move these settings here and remove hyprmod
+-- HyprMod managed settings
+require("hyprland-gui")

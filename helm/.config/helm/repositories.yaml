@@ -14,15 +14,6 @@ repositories:
   certFile: ""
   insecure_skip_tls_verify: false
   keyFile: ""
-  name: bitnami-labs
-  pass_credentials_all: false
-  password: ""
-  url: https://bitnami-labs.github.io/sealed-secrets
-  username: ""
-- caFile: ""
-  certFile: ""
-  insecure_skip_tls_verify: false
-  keyFile: ""
   name: jetstack
   pass_credentials_all: false
   password: ""

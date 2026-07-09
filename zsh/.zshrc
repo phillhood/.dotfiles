@@ -66,8 +66,10 @@ alias c='clear'
 alias ~='cd ~'
 alias ..='cd ..'
 alias ls='eza --icons'
-alias ll='eza -l --icons --git'
-alias la='eza -la --icons --git'
+alias ll='eza -lb --icons --git'
+alias la='eza -lba --icons --git'
+alias lls='eza -lb --icons --git --sort=size --reverse'
+alias las='eza -lba --icons --git --sort=size --reverse'
 alias tree='eza --tree --icons'
 alias cat='bat --paging=never'
 alias grep='rg'
@@ -98,3 +100,9 @@ if [ -f /etc/os-release ]; then
   distro_file="$HOME/.config/utils/distro/$ID"
   [ -r "$distro_file" ] && source "$distro_file"
 fi
+
+# ---- Installer wasteland ----
+
+# >>> Codex installer >>>
+export PATH="/home/phill/.local/bin:$PATH"
+# <<< Codex installer <<<
