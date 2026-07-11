@@ -1,5 +1,7 @@
-# Claude Code's config for THIS repo (leading / = repo root only, not the claude/ package)
+# vibecoding my own dotfiles... disgraceful
 /.claude/
+AGENTS.md
+CLAUDE.md
 
 # superpowers SDD scratch
 .superpowers/

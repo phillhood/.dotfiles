@@ -160,6 +160,23 @@ margin: 0px 4px 2px 2px;
   border-right: none;
 }
 
+#network-panel > widget,
+#network-panel label,
+#network-panel > widget > label,
+#network-visible > widget,
+#network-visible label,
+#network-visible > widget > label {
+  border-right: none;
+}
+
+#custom-tailscale-icon,
+#custom-tailscale-active {
+  min-width: 14px;
+  padding-left: 0px;
+  padding-right: 2px;
+  margin-right: -3px;
+}
+
 /* Container tray box (right) + clock box (right) */
 
 #r3,
