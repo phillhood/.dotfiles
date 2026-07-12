@@ -16,6 +16,7 @@ config immediately — the deployed files are symlinks back into this repo.
 | `tmux`     | `~/.tmux.conf`                                            |
 | `ssh`      | `~/.ssh/config`                                           |
 | `claude`   | `~/.claude/CLAUDE.md`, `~/.claude/hooks/uv-python.sh`      |
+| `pi`       | `~/.pi/agent/extensions/{status-line,context-command}.ts`  |
 | `bat`      | `~/.config/bat/config`                                    |
 | `htop`     | `~/.config/htop/htoprc`                                   |
 | `k9s`      | `~/.config/k9s/*`                                         |

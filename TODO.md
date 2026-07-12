@@ -19,10 +19,3 @@ Open follow-ups for the stow-based dotfiles.
       with the correct machine node path).
 - [ ] Bootstrap: install GSD (`npx gsd-core …`, regenerates hooks) then **merge** the canonical
       prefs into `~/.claude/settings.json` (e.g. `jq -s '.[0] * .[1]'`) — don't overwrite.
-
-## Bootstrap (separate repo) — built + pushed
-- [x] `phillhood/bootstrap` built and pushed public to GitHub (`install.sh` + `lib/` + `steps/` +
-      `packages/{core,cli,docker,k8s}.txt` + `kek/`). `DOTFILES_BRANCH` defaults to `stow`, and `stow`
-      is now the dotfiles default branch, so `curl … | bash` works with no extra env.
-- [ ] Add a bootstrap step to apply `canonical/` configs on a fresh machine (see Claude Code above).
-- [ ] Port the deferred container smoke-test for end-to-end idempotency verification.

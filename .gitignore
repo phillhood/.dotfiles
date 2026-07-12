@@ -1,11 +1,3 @@
-# vibecoding my own dotfiles... disgraceful
-/.claude/
-AGENTS.md
-CLAUDE.md
-
-# superpowers SDD scratch
-.superpowers/
-
 # ---- Public-repo secret guards (backstop; --no-folding already prevents dir-symlink leaks) ----
 # ssh: private keys + host state
 ssh/.ssh/id_*
