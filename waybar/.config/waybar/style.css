@@ -67,7 +67,7 @@ window#waybar {
 #power-box,
 #custom-cava {
   border-radius: 4px;
-  border: 1.5px solid @grey;
+  /* border: 1.5px solid @mauve; */
   background-color: alpha(@base, 0.55);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
 }
@@ -82,7 +82,7 @@ window#waybar {
 #workspaces-box > widget,
 #workspaces button {
   border: none;
-  border-right: 1.5px solid @grey;
+  /* border-right: 1.5px solid @mauve; */
   border-radius: 0;
   margin: 0;
 }
@@ -401,7 +401,7 @@ tooltip label {
   color: @blue;
   font-size: 16px;
   min-width: 15px;
-  padding: 0px 12px 0px 8px;
+  padding: 0px 8px 0px 8px;
   border-radius: 3px;
 }
 

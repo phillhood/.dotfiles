@@ -172,12 +172,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	match = { class = "spotify" },
+	match = { class = "Spotify" },
 	opacity = "1.0 override",
 })
 
 hl.window_rule({
-	match = { class = "^.*Discord$" },
+	match = { class = "discord" },
 	opacity = "1.0 override",
 })
 
