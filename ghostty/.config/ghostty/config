@@ -11,3 +11,6 @@ minimum-contrast = 3
 
 # Options
 shell-integration-features = ssh-terminfo
+
+# Keybinds
+keybind = ctrl+w=close_surface

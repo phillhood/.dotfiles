@@ -51,7 +51,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("sleep 2 && xembedsniproxy")
 	hl.exec_cmd("/usr/lib/xdg-desktop-portal-hyprland")
 	hl.exec_cmd("sleep 1 && /usr/lib/xdg-desktop-portal --replace")
-	hl.exec_cmd("elephant")
+	hl.exec_cmd("systemctl --user start elephant.service")
 	hl.exec_cmd("sleep 2 && walker --gapplication-service")
 end)
 
