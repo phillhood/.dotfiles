@@ -25,6 +25,9 @@ hl.env("LIBVA_DRIVER_NAME", "nvidia")
 hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 hl.env("GBM_BACKEND", "nvidia-drm")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
+-- Electron reads this only as a HINT: even the explicit value "wayland" is ignored
+-- unless XDG_SESSION_TYPE=wayland is also in the app's environment. So anything that
+-- launches GUI apps must inherit the full session env, not just this var.
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 hl.env("XCURSOR_SIZE", "24")
 hl.env("QT_QPA_PLATFORM", "wayland")
@@ -51,7 +54,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("sleep 2 && xembedsniproxy")
 	hl.exec_cmd("/usr/lib/xdg-desktop-portal-hyprland")
 	hl.exec_cmd("sleep 1 && /usr/lib/xdg-desktop-portal --replace")
-	hl.exec_cmd("systemctl --user start elephant.service")
+	hl.exec_cmd("elephant")
 	hl.exec_cmd("sleep 2 && walker --gapplication-service")
 end)
 
@@ -65,7 +68,6 @@ hl.config({
 		follow_mouse = 1,
 		numlock_by_default = true,
 
-		-- MOUSE -----------------------------------------------------------
 		sensitivity = 0,
 		accel_profile = "flat",
 
@@ -76,7 +78,6 @@ hl.config({
 		touchpad = {
 			natural_scroll = false,
 		},
-		---------------------------------------------------------------------
 	},
 
 	general = {
@@ -85,12 +86,6 @@ hl.config({
 		border_size = 1,
 		layout = "dwindle",
 		col = {
-			-- Gradients are a table of rgb(...)/rgba(...) colors + an angle.
-			-- colors.* are already in rgb(...) format.
-			-- active_border = { colors = { colors.mauve, colors.blue }, angle = 45 },
-			-- active_border = { colors = { "rgb(ff2ed6)", "rgb(00e5ff)" }, angle = 45 },
-			-- active_border = { colors = { "rgb(ff2ed6)", "rgb(ff2ed6)", "rgb(00e5ff)", "rgb(00e5ff)" }, angle = 45 },
-			-- Solid neon cyan, no gradient.
 			active_border = { colors = { "rgb(cba6f7)" } },
 			inactive_border = colors.surface0,
 		},
@@ -130,6 +125,13 @@ hl.config({
 -- Hide the Wine/XEmbed systray icon windows (empty class+title, XWayland) in place:
 -- xembedsniproxy proxies them to the tray, but the X11 window re-shows as a black box
 -- on click. Dynamic opacity/no_blur re-hide it each time (a static rule fires only once).
+-- CAUTION: this matcher (empty class+title, floating, XWayland) also matches NATIVE
+-- X11 popup menus -- Electron's Menu.popup() etc. are override-redirect windows with
+-- no class or title, so they get opacity 0 + no_focus and dismiss instantly. Only
+-- bites apps that use native menus AND run on XWayland (Fastmail did; Discord and
+-- Spotify are fine on XWayland because they draw menus in-page as HTML). Fix by
+-- keeping such apps on native Wayland, not by narrowing this rule -- Hyprland has no
+-- size/pid matcher that could separate a Wine tray icon from a popup menu.
 hl.window_rule({
 	name = "hide-wine-tray-bar",
 	match = {
@@ -184,16 +186,6 @@ hl.window_rule({
 ------------------------
 ----  LAYER RULES   ----
 ------------------------
-
--- shypad sticky notes: frost the translucent layer surface (namespace "shypad").
--- ignore_alpha keeps the fully-transparent gutter from being blurred, so only the
--- note body frosts, not the whole surface rectangle.
-hl.layer_rule({
-	name = "shypad-glass",
-	match = { namespace = "^shypad$" },
-	blur = true,
-	ignore_alpha = 0.2,
-})
 
 --------------------
 ----  PROGRAMS  ----

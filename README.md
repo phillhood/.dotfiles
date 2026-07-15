@@ -8,29 +8,35 @@ config immediately — the deployed files are symlinks back into this repo.
 
 ## Layout
 
-| Package    | Symlinks into                                             |
-| ---------- | --------------------------------------------------------- |
-| `zsh`      | `~/.zshrc`, `~/.hushlogin`, `~/.config/utils/*`           |
-| `starship` | `~/.config/starship.toml`                                 |
-| `git`      | `~/.gitconfig`, `~/.gitconfig-shy`, `~/.gitignore_global` |
-| `tmux`     | `~/.tmux.conf`                                            |
-| `ssh`      | `~/.ssh/config`                                           |
-| `claude`   | `~/.claude/CLAUDE.md`, `~/.claude/hooks/uv-python.sh`      |
-| `pi`       | `~/.pi/agent/extensions/{status-line,context-command}.ts`  |
-| `bat`      | `~/.config/bat/config`                                    |
-| `htop`     | `~/.config/htop/htoprc`                                   |
-| `k9s`      | `~/.config/k9s/*`                                         |
-| `helm`     | `~/.config/helm/repositories.yaml`                        |
-| `hypr`     | `~/.config/hypr/{hyprland.lua,themes,scripts}` (plugins/ + *.bak excluded) |
-| `waybar`   | `~/.config/waybar/{config.jsonc,style.css,*.sh}` (backup/ + *.bak excluded) |
-| `walker`   | `~/.config/walker/*`                                      |
-| `ghostty`  | `~/.config/ghostty/*`                                     |
-| `btop`     | `~/.config/btop/*`                                        |
-| `cava`     | `~/.config/cava/*`                                        |
-| `fastfetch`| `~/.config/fastfetch/*`                                   |
+| Package     | Symlinks into                                                   |
+| ----------- | --------------------------------------------------------------- |
+| `zsh`       | `~/.zshrc`, `~/.hushlogin`, `~/.config/utils/*`                 |
+| `starship`  | `~/.config/starship.toml`                                       |
+| `git`       | `~/.gitconfig`, `~/.gitconfig-shy`, `~/.gitignore_global`       |
+| `tmux`      | `~/.tmux.conf`                                                  |
+| `ssh`       | `~/.ssh/config`                                                 |
+| `claude`    | `~/.claude/CLAUDE.md`, `~/.claude/hooks/uv-python.sh`           |
+| `pi`        | `~/.pi/agent/extensions/{status-line,context-command,title}.ts` |
+| `bat`       | `~/.config/bat/config`                                          |
+| `htop`      | `~/.config/htop/htoprc`                                         |
+| `k9s`       | `~/.config/k9s/*`                                               |
+| `helm`      | `~/.config/helm/repositories.yaml`                              |
+| `hypr`      | `~/.config/hypr/{hyprland.lua,hyprland-gui.lua,themes,scripts}` |
+| `waybar`    | `~/.config/waybar/{config.jsonc,style.css,*.sh}`                |
+| `walker`    | `~/.config/walker/*`                                            |
+| `ghostty`   | `~/.config/ghostty/*`                                           |
+| `btop`      | `~/.config/btop/*`                                              |
+| `cava`      | `~/.config/cava/*`                                              |
+| `fastfetch` | `~/.config/fastfetch/*`                                         |
 
-Repo-only (not stowed): `tools/` — terminal colour-scheme tooling, plus `tools/canonical/` (reference
-configs a plugin rewrites live — e.g. `.claude/settings.json` — applied by `bootstrap`, not stow).
+`hypr/.config/hypr/plugins/`, `waybar/.config/waybar/backup/`, and `*.bak` are gitignored, so they
+never enter the repo and stow never links them. That's git-level, not stow-level — there are no
+`.stow-local-ignore` files, and stow's built-in ignore list doesn't cover `*.bak`, so a stray `.bak`
+left inside a package dir would still be symlinked by `make stow`.
+
+Repo-only (not stowed): `tools/` — terminal colour-scheme tooling in `tools/terminals/`, plus
+`tools/canonical/` (reference configs a tool rewrites live — e.g. `.claude/settings.json` — applied by
+`bootstrap`, not stow).
 
 ## Usage
 
@@ -45,13 +51,19 @@ make install          # symlink every package into $HOME
 Common operations:
 
 ```sh
-make stow             # symlink all packages (idempotent)
-make unstow           # remove all symlinks
-make restow           # re-link after adding/renaming files
-stow git tmux         # stow individual packages
-stow -D k9s           # unstow a single package
-stow -n zsh           # dry-run (show what would happen)
+make help                     # list targets
+make stow                     # symlink all packages (idempotent)
+make unstow                   # remove all symlinks
+make restow                   # re-link after adding/renaming files
+stow --no-folding git tmux    # stow individual packages
+stow --no-folding -D k9s      # unstow a single package
+stow --no-folding -n zsh      # dry-run (show what would happen)
 ```
+
+> [!IMPORTANT]
+> Always pass `--no-folding` when calling `stow` directly (`make` already does — see `Makefile:2-4`).
+> Without it, stowing `ssh/` or `claude/` onto a host lacking `~/.ssh`/`~/.claude` points that whole
+> directory at this public repo, so a later-written key lands inside it.
 
 `make install` only creates symlinks — it does **not** install software.
 

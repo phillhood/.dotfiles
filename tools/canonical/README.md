@@ -16,5 +16,6 @@ touches it.
 
 ## Notes per file
 
-- **`.claude/settings.json`** — Claude Code + the GSD framework rewrite this live (GSD regenerates
-  its `hooks` block, with machine-specific node paths). So it's untracked from the `claude` package and kept here instead.
+- **`.claude/settings.json`** — Claude Code rewrites this live, so it's untracked from the `claude`
+  package and kept here instead. Keep this copy free of `//` comments: it's JSON, not JSONC, so that a
+  `jq`-based bootstrap merge can parse it.

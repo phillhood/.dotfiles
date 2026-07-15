@@ -17,10 +17,10 @@
   "effortLevel": "xhigh",
   "advisorModel": "fable",
   "theme": "dark",
-  // TODO: custom status line - https://code.claude.com/docs/en/statusline#manually-configure-a-status-line
   "statusLine": {
     "type": "command",
-    "command": "\"/home/phill/.local/share/fnm/node-versions/v24.17.0/installation/bin/node\" \"/home/phill/.claude/hooks/gsd-statusline.js\""
+    "command": "/home/phill/.claude/ccline/ccline",
+    "padding": 0
   },
   "attribution": {
     "commit": "",
