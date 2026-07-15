@@ -1,36 +1,39 @@
 {
+
+  // ===== (a) bar settings =====
   "exclusive": true,
   "reload_style_on_change": true,
   "position": "top",
-  "margin-top": 8,
-  "margin-left": 5,
-  "margin-bottom": 0,
-  "margin-right": 5,
+  "margin-top": 4,
+  "margin-left": 2,
+
+  // ===== (b) layout: bar order + group containers =====
   "modules-left": [
-    "group/l0",
-    "group/l1",
-    "group/l3",
-    "group/r2"
+    "group/launcher-box",
+    "group/workspaces-box",
+    "group/media-box",
+    "group/cava-box"
   ],
-  "group/l0": {
+  "modules-right": [
+    "group/tray-box",
+    "group/system-box",
+    "group/clock-box",
+    "group/power-box"
+  ],
+  // -- left groups (visual order) --
+  "group/launcher-box": {
     "orientation": "inherit",
     "modules": [
       "custom/arch"
     ]
   },
-  "custom/arch": {
-    "format": "",
-    "tooltip": false,
-    "on-click": "walker -m desktopapplications -t catppuccin-grid -p Apps",
-    "on-click-right": "~/.config/waybar/power-menu.sh"
-  },
-  "group/l1": {
+  "group/workspaces-box": {
     "orientation": "inherit",
     "modules": [
       "hyprland/workspaces"
     ]
   },
-  "group/l3": {
+  "group/media-box": {
     "orientation": "inherit",
     "drawer": {
       "transition-duration": 400,
@@ -43,42 +46,20 @@
       "custom/media-next"
     ]
   },
-  "custom/media-prev": {
-    "format": "󰒮",
-    "on-click": "playerctl previous",
-    "tooltip": false
-  },
-  "custom/media-playpause": {
-    "exec": "~/.config/waybar/media-status.sh",
-    "restart-interval": 2,
-    "format": "{}",
-    "on-click": "playerctl play-pause",
-    "tooltip": false
-  },
-  "custom/media-next": {
-    "format": "󰒭",
-    "on-click": "playerctl next",
-    "tooltip": false
-  },
-  "group/r2": {
+  "group/cava-box": {
     "orientation": "inherit",
     "modules": [
       "custom/cava"
     ]
   },
-  "modules-right": [
-    "group/r3",
-    "group/r1",
-    "group/r4",
-    "group/r5"
-  ],
-  "group/r3": {
+  // -- right groups (visual order; network-panel/-visible/audio nest inside system-box) --
+  "group/tray-box": {
     "orientation": "inherit",
     "modules": [
       "tray"
     ]
   },
-  "group/r1": {
+  "group/system-box": {
     "orientation": "inherit",
     "modules": [
       "cpu",
@@ -118,25 +99,29 @@
       "pulseaudio/slider"
     ]
   },
-  "group/r4": {
+  "group/clock-box": {
     "orientation": "inherit",
     "modules": [
       "custom/date",
       "custom/clock"
     ]
   },
-  "group/r5": {
+  "group/power-box": {
     "orientation": "inherit",
     "modules": [
       "custom/sleep"
     ]
   },
-  "custom/sleep": {
-    "format": "<span color='#f5a97f'>󰤄</span>",
-    "tooltip": true,
-    "tooltip-format": "Suspend (sleep)",
-    "on-click": "systemctl suspend"
+
+  // ===== (c) module definitions =====
+  // -- launcher --
+  "custom/arch": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "walker -m desktopapplications -t catppuccin-grid -p Apps",
+    "on-click-right": "~/.config/waybar/power-menu.sh"
   },
+  // -- workspaces --
   "hyprland/workspaces": {
     "disable-scroll": true,
     "all-outputs": false,
@@ -177,13 +162,61 @@
       "class<.*[Oo]bsidian.*>": "󰈙 "
     }
   },
+  // -- media --
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "format-playing": "{player_icon} {dynamic}",
+    "format-paused": "<span color='grey'>{status_icon} {dynamic}</span>",
+    "title-len": 20,
+    "dynamic-order": [
+      "artist",
+      "title"
+    ],
+    "tooltip-format": "{player} ({status}):\n{artist} - {title}",
+    "player-icons": {
+      "default": "<span color='#ed8796'>󰖟</span>",
+      "spotify": "<span color='#a6da95'>󰓇</span>"
+    },
+    "status-icons": {
+      "paused": "󰝛"
+    },
+    "ignored-players": [
+      "firefox",
+      "chromium"
+    ],
+    "on-click": "~/.config/waybar/media-open.sh"
+  },
+  "custom/media-prev": {
+    "format": "󰒮",
+    "on-click": "playerctl previous",
+    "tooltip": false
+  },
+  "custom/media-playpause": {
+    "exec": "~/.config/waybar/media-status.sh",
+    "restart-interval": 2,
+    "format": "{}",
+    "on-click": "playerctl play-pause",
+    "tooltip": false
+  },
+  "custom/media-next": {
+    "format": "󰒭",
+    "on-click": "playerctl next",
+    "tooltip": false
+  },
+  // -- cava --
   "custom/cava": {
-    "cava_config": "~/.config/cava/config",
     "format": "{}",
     "return-type": "json",
     "exec": "~/.config/waybar/cava.sh",
     "tooltip": false
   },
+  // -- tray --
+  "tray": {
+    "icon-size": 14,
+    "spacing": 4,
+    "reverse-direction": true
+  },
+  // -- system: cpu / memory --
   "cpu": {
     "interval": 10,
     "format": "<span color='#ed8796'></span> {usage:02}%",
@@ -202,19 +235,7 @@
       "critical": 80
     }
   },
-  "custom/clock": {
-    "exec": "date +'%I:%M %p' | tr '[:upper:]' '[:lower:]'",
-    "format": "<span color='#7dc4e4'>{}</span>",
-    "interval": 5,
-    "tooltip": false,
-    "on-click-right": "" // REVIEW: no-op empty handler
-  },
-  "custom/date": {
-    "exec": "date +'%B %d, %Y'",
-    "interval": 60,
-    "tooltip": false,
-    "on-click-right": "" // REVIEW: no-op empty handler
-  },
+  // -- system: network + tailscale --
   "network": {
     "format-icons": [
       "󰤯",
@@ -254,6 +275,7 @@
     "tooltip": true,
     "on-click": "~/.config/waybar/tailscale-waybar.sh toggle"
   },
+  // -- system: bluetooth --
   "bluetooth": {
     "format": "<span color='#7dc4e4'></span> {num_connections}",
     "format-disabled": "<span color='#7dc4e4'>󰂲</span> {status}",
@@ -261,6 +283,7 @@
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "blueman-manager"
   },
+  // -- system: audio --
   "pulseaudio#input": {
     "format-source": "<span color='#a6da95'>󰍬</span>",
     "format-source-muted": "<span color='#ed8796'>󰍭</span>",
@@ -296,52 +319,23 @@
     "max": 100,
     "orientation": "horizontal"
   },
-  "mpris": {
-    "format": "{player_icon} {dynamic}",
-    "format-playing": "{player_icon} {dynamic}",
-    "format-paused": "<span color='grey'>{status_icon} {dynamic}</span>",
-    "title-len": 20,
-    "dynamic-order": [
-      "artist",
-      "title"
-    ],
-    "tooltip-format": "{player} ({status}):\n{artist} - {title}",
-    "player-icons": {
-      "default": "<span color='#ed8796'>󰖟</span>",
-      "spotify": "<span color='#a6da95'>󰓇</span>"
-    },
-    "status-icons": {
-      "paused": "󰝛"
-    },
-    "ignored-players": [
-      "firefox",
-      "chromium"
-    ],
-    "on-click": "~/.config/waybar/media-open.sh",
-    "on-click-middle": "", // REVIEW: no-op empty handler
-    "on-click-right": "" // REVIEW: no-op empty handler
+  // -- clock --
+  "custom/date": {
+    "exec": "date +'%B %d, %Y'",
+    "interval": 60,
+    "tooltip": false
   },
-  // TODO: wire this up
-  "custom/updatespacman": {
-    "format": "{}{icon}",
-    "return-type": "json",
-    "format-icons": {
-      "has-updates": " 󰏖",
-      "updated": ""
-    },
-    "exec-if": "command -v waybar-module-pacman-updates",
-    "exec": "waybar-module-pacman-updates --no-zero-output"
+  "custom/clock": {
+    "exec": "date +'%I:%M %p' | tr '[:upper:]' '[:lower:]'",
+    "format": "<span color='#7dc4e4'>{}</span>",
+    "interval": 5,
+    "tooltip": false
   },
-  "tray": {
-    "icon-size": 14,
-    "spacing": 4,
-    "reverse-direction": true
-  },
-  // TODO: wire this up
-  "custom/screenrecording-indicator": {
-    "on-click": "g",
-    "exec": "",
-    "signal": 8,
-    "return-type": "json"
+  // -- power --
+  "custom/sleep": {
+    "format": "<span color='#f5a97f'>󰤄</span>",
+    "tooltip": true,
+    "tooltip-format": "Suspend (sleep)",
+    "on-click": "systemctl suspend"
   }
 }

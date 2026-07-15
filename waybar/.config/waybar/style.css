@@ -52,32 +52,42 @@
     margin: 0rem 0rem 0rem 0rem;
 }
 
-window#waybar  {
+window#waybar {
   background-color: transparent;
 }
 
-/* Container L1 */
-
-#l1 {
-  margin: 0px 4px 2px 4px;
-  padding: 0px 0px;
+/* Shared "card" chrome for every bar container.
+   Per-container margin/padding live in each container's own rule below. */
+#launcher-box,
+#workspaces-box,
+#media-box,
+#system-box,
+#tray-box,
+#clock-box,
+#power-box,
+#custom-cava {
   border-radius: 4px;
   border: 1.5px solid @grey;
   background-color: alpha(@base, 0.55);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
 }
 
-#l1 > widget,
-#l1 #custom-omarchy,
+/* Container: workspaces */
+
+#workspaces-box {
+  margin: 0px 4px 2px 4px;
+  padding: 0px 0px;
+}
+
+#workspaces-box > widget,
 #workspaces button {
-  border: none; 
-  border-right: 1.5px solid @grey; 
+  border: none;
+  border-right: 1.5px solid @grey;
   border-radius: 0;
   margin: 0;
 }
 
-#l1 > widget:first-child,
-#l1 #custom-omarchy {
+#workspaces-box > widget:first-child {
   border-radius: 3px 0px 0px 3px;
 }
 
@@ -86,40 +96,7 @@ window#waybar  {
   border-radius: 0px 3px 3px 0px;
 }
 
-/* Container L2 */
-
-#l2 {
-margin: 0px 4px 2px 4px;
-  padding: 2px 0px;
-  border-radius: 4px;
-  border: 1.5px solid @grey;
-  background-color: alpha(@base, 0.55);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
-}
-
-#l2 label, 
-#l2 > widget > label,
-#l2 > widget {
-  padding: 0px 9px;
-  margin: 0px 0px;
-  color: @fg;
-  font-weight: 900;
-  font-size: 14px;
-  border-right: 0.5px solid @grey; 
-}
-
-#l2 > widget:first-child label,
-#l2 > widget:first-child {
-  border-radius: 3px 0px 0px 3px;
-}
-
-#l2 > widget:last-child label,
-#l2 > widget:last-child {
-  border-radius: 0px 3px 3px 0px;
-  border-right: none; 
-}
-
-window#waybar.empty #l3,
+window#waybar.empty #media-box,
 window#waybar.empty #mpris {
     margin: 0;
     padding: 0;
@@ -127,35 +104,39 @@ window#waybar.empty #mpris {
     background-color: transparent;
 }
 
-/* Container module right */
+/* Container: system (cpu / memory / network / bluetooth / audio) */
 
-#r1 {
-margin: 0px 4px 2px 2px;
+#system-box {
+  margin: 0px 4px 2px 2px;
   padding: 2px 0px;
-  border-radius: 4px;
-  border: 1.5px solid @grey;
-  background-color: alpha(@base, 0.55);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
 }
 
-#r1 label, 
-#r1 > widget > label,
-#r1 > widget {
+/* Shared label/widget padding for the system + clock containers */
+#system-box label,
+#system-box > widget > label,
+#system-box > widget,
+#clock-box label,
+#clock-box > widget > label,
+#clock-box > widget {
   padding: 0px 9px;
   margin: 0px 0px;
   color: @fg;
   font-weight: 900;
   font-size: 14px;
-  border-right: 0.5px solid @grey; 
+  border-right: 0.5px solid @grey;
 }
 
-#r1 > widget:first-child label,
-#r1 > widget:first-child {
+#system-box > widget:first-child label,
+#system-box > widget:first-child,
+#clock-box > widget:first-child label,
+#clock-box > widget:first-child {
   border-radius: 3px 0px 0px 3px;
 }
 
-#r1 > widget:last-child label,
-#r1 > widget:last-child {
+#system-box > widget:last-child label,
+#system-box > widget:last-child,
+#clock-box > widget:last-child label,
+#clock-box > widget:last-child {
   border-radius: 0px 3px 3px 0px;
   border-right: none;
 }
@@ -177,51 +158,25 @@ margin: 0px 4px 2px 2px;
   margin-right: -3px;
 }
 
-/* Container tray box (right) + clock box (right) */
+/* Containers: tray, clock, power */
 
-#r3,
-#r4,
-#r5 {
+#tray-box,
+#clock-box,
+#power-box {
   margin: 0px 4px 2px 2px;
   padding: 2px 0px;
-  border-radius: 4px;
-  border: 1.5px solid @grey;
-  background-color: alpha(@base, 0.55);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
 }
 
-#r3 label,
-#r3 > widget,
-#r5 label,
-#r5 > widget {
+#tray-box label,
+#tray-box > widget,
+#power-box label,
+#power-box > widget {
   padding: 0px 9px;
   margin: 0px 0px;
   color: @fg;
   font-weight: 900;
   font-size: 14px;
   border-radius: 3px;
-}
-
-#r4 label,
-#r4 > widget > label,
-#r4 > widget {
-  padding: 0px 9px;
-  margin: 0px 0px;
-  color: @fg;
-  font-weight: 900;
-  font-size: 14px;
-  border-right: 0.5px solid @grey;
-}
-
-#r4 > widget:first-child label,
-#r4 > widget:first-child {
-  border-radius: 3px 0px 0px 3px;
-}
-
-#r4 > widget:last-child label,
-#r4 > widget:last-child {
-  border-radius: 0px 3px 3px 0px;
-  border-right: none;
 }
 
 /* Container module center */
@@ -261,7 +216,7 @@ margin: 0px 4px 2px 2px;
   opacity: 1.0;
 }
 
-#workspaces button.empty:hover, 
+#workspaces button.empty:hover,
 #workspaces button:hover {
     background: transparent;
     color: @fg;
@@ -286,30 +241,14 @@ margin: 0px 4px 2px 2px;
   color: @bg;
 }
 
-#custom-omarchy {
-    background-image: url("bob2.svg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 92%;
-    border-radius: 3px;
-  }
-
-
-  /* L1 single groups */
+/* Single-module padding (left cluster) */
 #custom-cava,
 #memory,
 #mpris,
 #cpu,
-#battery,
-#backlight,
 #network,
 #bluetooth,
-#pulseaudio,
-#power-profiles-daemon,
-#power-profiles-daemon.performance,
-#power-profiles-daemon.balanced,
-#power-profiles-daemon.power-saver,
-#custom-omarchy {
+#pulseaudio {
   min-width: 15px;
   color: @fg;
   opacity: 1;
@@ -323,50 +262,14 @@ margin: 0px 4px 2px 2px;
   padding-right: 13px;
 }
 
-#battery.discharging,
-#battery.full,
-#battery.plugged,
-#battery.charging {
-  padding-right: 14px;
-}
-
-/* L2 single groups */
-
-#tray,
-#idle_inhibitor,
-#custom-idle-indicator,
-#custom-notification-silencing-indicator,
-#custom-updatespacman,
-#custom-screenrecording-indicator,
-#custom-update {
+/* Single-module padding (right cluster) */
+#tray {
   min-width: 15px;
   color: @fg;
   opacity: 1;
   padding-left: 9px;
   padding-right: 9px;
-}
-
-#tray {
-padding-top: 0px;
-}
-
-#power-profiles-daemon.power-saver {
-padding-right: 14px;
-}
-
-#custom-idle-indicator,
-#custom-notification-silencing-indicator {
-  min-width: 12px;
-  margin-left: 0;
-  margin-right: 0;
-  font-size: 14px;
-  padding-bottom: 0px;
-}
-
-#custom-idle-indicator.active,
-#custom-notification-silencing-indicator.active {
-  color: #a55555;
-  opacity: 1;
+  padding-top: 0px;
 }
 
 .hidden {
@@ -374,67 +277,26 @@ padding-right: 14px;
 }
 
 tooltip {
- padding: 4px;
- background: @bg;
- font-size: 10px;
- border: 2px solid @grey;
- border-radius: 8px;
- 
+  padding: 4px;
+  background: @bg;
+  font-size: 10px;
+  border: 2px solid @grey;
+  border-radius: 8px;
 }
+
 tooltip label {
-    color: alpha(@fg, 0.65);
-    font-weight: normal;
-}
-
-#custom-voxtype {
-  min-width: 12px;
-  margin: 0 0 0 2.5px;
-}
-
-#custom-voxtype.recording {
-  color: #a55555;
-}
-
-/* Specific animation Module */
-
-
-#custom-screenrecording-indicator {
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  color: transparent;
-}
-
-#custom-screenrecording-indicator.active {
-  color: #eb7087;
-  animation-name: blink-recording;
-  animation-duration: 0.5s;
-}
-
-@keyframes blink-recording {
-    to {
-        color: @bg;
-    }
-}
-
-@keyframes blink-inhibitor {
-    to {
-        color: @bg;
-    }
+  color: alpha(@fg, 0.65);
+  font-weight: normal;
 }
 
 #custom-cava {
   margin: 0px 2px 2px 2px;
   padding: 2px 9px;
-  border-radius: 4px;
-  border: 1.5px solid @grey;
-  background-color: alpha(@base, 0.55);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
-opacity: 1;
-transition: opacity 600ms ease-in-out;
-color: @fg;
-font-size: 10px;
-letter-spacing: -1px;
+  opacity: 1;
+  transition: opacity 600ms ease-in-out;
+  color: @fg;
+  font-size: 10px;
+  letter-spacing: -1px;
 }
 
 #custom-cava.silent {
@@ -443,13 +305,9 @@ letter-spacing: -1px;
 
 /* Now-playing box (mpris + media control drawer) */
 
-#l3 {
+#media-box {
   margin: 0px 4px 2px 2px;
   padding: 2px 0px;
-  border-radius: 4px;
-  border: 1.5px solid @grey;
-  background-color: alpha(@base, 0.55);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
 }
 
 #mpris {
@@ -458,11 +316,11 @@ letter-spacing: -1px;
   color: @fg;
   border-radius: 3px 0px 0px 3px;
   animation: repeat;
-	animation-name: blink;
-	animation-duration: 3s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  animation-name: blink;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 #custom-media-prev,
@@ -485,30 +343,11 @@ letter-spacing: -1px;
 @keyframes blink {
     to {
         color: #4a4a4a;
-        
     }
 }
 
-#network.disconnected,
-#battery.warning {
+#network.disconnected {
   color: #c95d0f;
-}
-
-@keyframes blink2 {
-  to {
-    background-color: transparent;
-    color: #f53c3c;
-  }
-}
-
-#battery.critical:not(.charging) {
-  background-color: transparent;
-  color: #e6d8ba;
-  animation-name: blink2;
-  animation-duration: 0.5s;
-  animation-timing-function: steps(12);
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
 }
 
 #pulseaudio.warning,
@@ -552,14 +391,10 @@ letter-spacing: -1px;
   background-color: @green;
 }
 
-/* Container L0 — Arch launcher button */
-#l0 {
+/* Container: launcher (Arch button) */
+#launcher-box {
   margin: 0px 2px 2px 0px;
   padding: 2px 0px;
-  border-radius: 4px;
-  border: 1.5px solid @grey;
-  background-color: alpha(@base, 0.55);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 1);
 }
 
 #custom-arch {

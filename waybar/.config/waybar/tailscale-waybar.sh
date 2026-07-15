@@ -121,8 +121,9 @@ toggle_tailscale() {
     tailscale up >/dev/null 2>&1 || true
   fi
 
-  # TODO: fix this egregious hack
-  refresh_waybar 
+  # Nudge waybar to re-run the tailscale modules immediately (they carry
+  # "signal": 9); the RTMIN+9 signal is the intended refresh path, not a hack.
+  refresh_waybar
 }
 
 case "${1:-icon}" in

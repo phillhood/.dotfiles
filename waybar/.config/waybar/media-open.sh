@@ -5,7 +5,7 @@ player=$(playerctl metadata --format '{{playerName}}' 2>/dev/null)
 
 # Map the active player to its Hyprland window class and a launch fallback.
 case "$player" in
-	spotify*)  class="spotify";        launch="flatpak run com.spotify.Client" ;;
+	spotify*)  class="spotify";        launch="spotify-launcher" ;;
 	brave*)    class="brave-browser";  launch="brave" ;;
 	firefox*)  class="firefox";        launch="firefox" ;;
 	chrom*)    class="chromium";       launch="chromium" ;;
